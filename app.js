@@ -20,21 +20,27 @@ var SPOT_ANGLE = Math.PI / 8;
 var SPOT_INTENSITY = 1.5;
 var SPOT_DISTANCE = 1000;
 
-var PANEL_Y = 10.5;
+var PANEL_Y = 10;
 var SCENE_WIDTH = 90;
+var TRANS_DURATION = 1750;
+
+var INFO_FINAL_Y = 4.5;
+var INFO_DURATION = TRANS_DURATION;
+var INFO_DELAY = 0;
 
 // initialize globals
 var camera, cameraControls, scene, renderer, fog;
-var panel_1, panel_2, panel_3, mirrorMesh, groundMirror, selectableObjects;
+var info_1, panel_1, panel_2, panel_3, mirrorMesh, groundMirror, selectableObjects;
 var spotOne, spotTwo, spotThree;
 var Views = {};
+var Tweens = {};
 
 function init() {
   // renderer
-  renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio( PIXEL_RATIO );
   renderer.setSize(WIDTH, HEIGHT);
-  renderer.setClearColor(0x333333, 1.0);
+  renderer.setClearColor(0x220000, 1.0);
 
   // scene
   scene = new THREE.Scene();
@@ -44,15 +50,34 @@ function init() {
 
   // camera
   camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-  camera.position.set(-CAMERA_DISTANCE, 20, SCENE_WIDTH / 3);
 
   // controls
-  cameraControls = new THREE.FlyControls(camera);
-  cameraControls.movementSpeed = 135;
-  cameraControls.rollSpeed = Math.PI / 12;
-  cameraControls.autoForward = false;
-  cameraControls.dragToLook = true;
+  // cameraControls = new THREE.FlyControls(camera);
+  // cameraControls.movementSpeed = 135;
+  // cameraControls.rollSpeed = Math.PI / 12;
+  // cameraControls.autoForward = false;
+  // cameraControls.dragToLook = true;
+
+  // attach to DOM
   document.getElementById('WebGL-output').appendChild(renderer.domElement);
+  // create variable controller
+  controls = new function() {
+
+    this.objPosX = 0;
+    this.objPosY = 0;
+    this.objPosZ = 0;
+
+    this.objRotY = 0;
+
+  }
+
+  // var gui = new dat.GUI();
+  // gui.add(controls, 'objRotY', -2*Math.PI, 2*Math.PI);
+  // gui.add(controls, 'objPosX', 0, 100);
+  // gui.add(controls, 'objPosY', -20, 50);
+  // gui.add(controls, 'objPosZ', 0, SCENE_WIDTH);
+
+
 }
 
 function fillScene() {
@@ -93,54 +118,77 @@ function fillScene() {
   scene.add(panel_2);
   scene.add(panel_3);
 
+  var infoGeo = new THREE.PlaneBufferGeometry(8 * 1.6, 8, 1, 1);
+  // info_1 = new THREE.Mesh(infoGeo, new THREE.MeshLambertMaterial({ color:0x333333 }));
+  info_1 = createMesh(infoGeo, 'featur.png');
+  info_1.position.x = 31;
+  info_1.position.y = -5;
+  info_1.position.z = -7;
+  info_1.rotation.y = -0.4268;
+  scene.add(info_1);
+  // info_2 = new THREE.Mesh(infoGeo, new THREE.MeshLambertMaterial({ color:0xffffff }));
+  info_2 = createMesh(infoGeo, 'hoodz.png');
+  info_2.position.x = 38;
+  info_2.position.y = -5;
+  info_2.position.z = SCENE_WIDTH / 3 - 8.5;
+  info_2.rotation.y = - Math.PI / 2;
+  scene.add(info_2);
+  // info_3 = new THREE.Mesh(infoGeo, new THREE.MeshLambertMaterial({ color:0xffffff }));
+  info_3 = createMesh(infoGeo, 'stretchme.png');
+  info_3.position.x = 31;
+  info_3.position.y = -5;
+  info_3.position.z = 2 * SCENE_WIDTH / 3 + 7;
+  info_3.rotation.y = - Math.PI / 2 - .7;
+  scene.add(info_3);
 
+  // init selectables for raycaster
   selectableObjects = [ panel_1, panel_2, panel_3 ];
 
-  // lights
-  var mainLight = new THREE.PointLight(0xcccccc, 0.5, 250);
-  mainLight.position.set(45, 20, 20);
+  // Lights
+  var mainLight = new THREE.PointLight(0xcccccc, 0.5, 300);
+  mainLight.position.set(0, 20, 20);
   scene.add( mainLight );
 
   var ambiLight = new THREE.AmbientLight(0x333333)
   // scene.add(ambiLight)
 
-  // lighting
   var spotOne = new THREE.SpotLight( 0xff0000 );
-  spotOne.position.set(0, 0, panel_1.position.z + 20);
-  spotOne.intensity = SPOT_INTENSITY;
-  spotOne.distance = SPOT_DISTANCE;
-  scene.add(spotOne);
+      spotOne.position.set(0, 0, panel_1.position.z + 20);
+      spotOne.intensity = SPOT_INTENSITY;
+      spotOne.distance = SPOT_DISTANCE;
+      scene.add(spotOne);
 
   var spotTwo = new THREE.SpotLight( 0x0000ff );
-  spotTwo.position.set(0, 0, panel_2.position.z);
-  spotTwo.intensity = SPOT_INTENSITY;
-  spotTwo.distance = SPOT_DISTANCE;
-  scene.add(spotTwo);
+      spotTwo.position.set(0, 0, panel_2.position.z);
+      spotTwo.intensity = SPOT_INTENSITY;
+      spotTwo.distance = SPOT_DISTANCE;
+      scene.add(spotTwo);
 
   var spotThree = new THREE.SpotLight( 0x00ff00 );
-  spotThree.position.set(0, 0, panel_3.position.z - 20);
-  spotThree.intensity = SPOT_INTENSITY;
-  spotThree.distance = SPOT_DISTANCE;
-  scene.add(spotThree);
+      spotThree.position.set(0, 0, panel_3.position.z - 20);
+      spotThree.intensity = SPOT_INTENSITY;
+      spotThree.distance = SPOT_DISTANCE;
+      scene.add(spotThree);
 
   spotOne.angle = SPOT_ANGLE;
   spotTwo.angle = SPOT_ANGLE;
   spotThree.angle = SPOT_ANGLE;
 
-  SPOT_TARGET = panel_3;
-
   spotOne.target = panel_1;
   spotTwo.target = panel_2;
   spotThree.target = panel_3;
 
+  camera.position.set(-CAMERA_DISTANCE, 20, panel_2.position.z);
   camera.lookAt(panel_2.position);
+
   // scene.fog = new THREE.Fog( 0x000000, 1, FOG_DEPTH);
 
 
   /* INTERACTION CONTROLS --------------------------------------- */
-  var projector = new THREE.Projector();
   document.addEventListener('mousedown', onDocumentMouseDown, false);
   document.addEventListener('mousemove', onDocumentMouseMove, false);
+  var projector = new THREE.Projector();
+
   var mouseover = false;
 
   // when clicked, panel takes user to corresponding project page
@@ -157,15 +205,46 @@ function fillScene() {
     // the object the ray intersects is the clicked panel
     var intersects = raycaster.intersectObjects( selectableObjects );
     if (intersects.length > 0) {
-      var selectedPanel = intersects[0].object;
-      if (selectedPanel == panel_1) {
+      var selectedObj = intersects[0].object;
+
+      if (selectedObj == panel_1) {
         // document.getElementById('featur').click();
-      } else if (selectedPanel == panel_2) {
-        cameraTween1.start();
+        resetInfoTwo.start();
+        resetInfoThree.start();
+        camToCenterPos.start();
+        camRotToPanelTwo.start();
+        camRotToPanelOne.start();
+        showInfoOne.start()
+
+      } else if (selectedObj == panel_2) {
+        resetInfoOne.start()
+        resetInfoThree.start();
+        camToCenterPos.start();
+        camRotToPanelTwo.start();
+        showInfoTwo.start();
         // document.getElementById('hoodz').click();
-      } else if (selectedPanel == panel_3) {
+
+      } else if (selectedObj == panel_3) {
+        resetInfoOne.start();
+        resetInfoTwo.start();
+        camToCenterPos.start();
+        camRotToPanelTwo.start();
+        camRotToPanelThree.start();
+        showInfoThree.start();
         // document.getElementById('stretchme').click();
+
+      } else if (selectedObj == info_1) {
+
       }
+    } else {
+        camToAllPanels.start();
+        camRotToPanelTwo.start();
+        resetInfoOne.start();
+        resetInfoTwo.start();
+        resetInfoThree.start();
+        spotOne.target = panel_1;
+        spotTwo.target = panel_2;
+        spotThree.target = panel_3;
     }
   };
 
@@ -183,26 +262,26 @@ function fillScene() {
 
     if (intersects.length > 0) {
       $('body').css('cursor', 'pointer');
-      var selectedPanel = intersects[0].object;
+      var selectedObj = intersects[0].object;
 
       // if not already mouse-ing over, then now we are
       if (!mouseover) {
         mouseover = true;
 
         // focus lighting on hovered-over panel
-        if (selectedPanel == panel_1) {
+        if (selectedObj == panel_1) {
           mainLight.target =
           spotOne.target =
           spotTwo.target =
           spotThree.target = panel_1;
 
-        } else if (selectedPanel == panel_2) {
+        } else if (selectedObj == panel_2) {
           mainLight.target =
           spotOne.target =
           spotTwo.target =
           spotThree.target = panel_2;
 
-        } else if (selectedPanel == panel_3) {
+        } else if (selectedObj == panel_3) {
           mainLight.target =
           spotOne.target =
           spotTwo.target =
@@ -213,33 +292,74 @@ function fillScene() {
     } else {
       mouseover = false;
       $('body').css('cursor', 'default');
+      // spotOne.target = panel_1;
+      // spotTwo.target = panel_2;
+      // spotThree.target = panel_3;
     }
   };
 
 }
 
+function createAnimations() {
+  // var elasticInOut = new TWEEN.Easing.Elastic.InOut();
+
+  camToAllPanels = new TWEEN.Tween(camera.position)
+    .to({ x: -60, y: 20, z: 30 }, TRANS_DURATION);
+
+  camToCenterPos = new TWEEN.Tween(camera.position)
+    .to({ x: -6.542, y: 15.137, z: 29.982 }, TRANS_DURATION);
+
+  camRotToPanelOne = new TWEEN.Tween(camera.rotation)
+    .to({ x: -0.1564, y: -0.9931, z: -0.1985 }, TRANS_DURATION);
+
+  camRotToPanelTwo = new TWEEN.Tween(camera.rotation)
+    .to({ x: -1.6, y: -1.4844, z: -1.6 }, TRANS_DURATION);
+
+  camRotToPanelThree = new TWEEN.Tween(camera.rotation)
+    .to({ x: -2.997, y: -0.9680, z: -2.9886 }, TRANS_DURATION);
+
+
+  showInfoOne = new TWEEN.Tween(info_1.position).to({ y: INFO_FINAL_Y }, INFO_DURATION)
+    .delay(INFO_DELAY);
+  showInfoTwo = new TWEEN.Tween(info_2.position).to({ y: INFO_FINAL_Y }, INFO_DURATION)
+    .delay(INFO_DELAY);
+  showInfoThree = new TWEEN.Tween(info_3.position).to({ y: INFO_FINAL_Y }, INFO_DURATION)
+    .delay(INFO_DELAY);
+  resetInfoOne = new TWEEN.Tween(info_1.position).to({ y: -5 }, INFO_DURATION * 0.5)
+  resetInfoTwo = new TWEEN.Tween(info_2.position).to({ y: -5 }, INFO_DURATION * 0.5)
+  resetInfoThree = new TWEEN.Tween(info_3.position).to({ y: -5 }, INFO_DURATION * 0.5)
+}
+
 function render() {
-  //render the mirror
+  // helper module to rerender on window resize
   THREEx.WindowResize(renderer, camera);
+  //render the mirror
   groundMirror.render();
+
   renderer.render(scene, camera);
 
 }
-var step = 0;
+
+var frame = 0;
 function update() {
-  step+=1;
-  if (!(step % 120)) console.log(camera.position, camera.rotation);
+  frame+=1;
+  // if (!(frame % 120)) console.log(camera.position, camera.rotation);
   TWEEN.update();
   requestAnimationFrame( update );
   // stats.update();
   var delta = clock.getDelta();
-  cameraControls.update(delta);
+  // cameraControls.update(delta);
+
+  // info_1.rotation.y = controls.objRotY;
+  // info_1.position.x = controls.objPosX;
+  // info_1.position.y = controls.objPosY;
+  // info_1.position.z = controls.objPosZ;
   render();
 }
 
 init();
 fillScene();
-// createAnimations();
+createAnimations();
 update();
 
 function createMesh(geom, imageFile) {
@@ -250,55 +370,15 @@ function createMesh(geom, imageFile) {
   return mesh;
 }
 
-function createAnimations() {
-  cameraTween1 = new TWEEN.Tween(camera.position).to({ x: -10, z: 0 }, 1000);
-  // cube1Tween = new TWEEN.Tween(cube1.position).to({ z:cube1.position.z + offset}, 1000);
-  // cube2Tween = new TWEEN.Tween(cube2.position).to({ z:cube2.position.z + offset}, 1000);
-  // cube3Tween = new TWEEN.Tween(cube3.position).to({ z:cube3.position.z + offset}, 1000);
-  // cube4Tween = new TWEEN.Tween(cube4.position).to({ z:cube4.position.z + offset}, 1000);
-}
-
-function createCameraControls() {
-
-  // cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
-  // cameraControls.center.set(45, 12, 36);
-  // cameraControls.maxDistance = 400;
-  // cameraControls.minDistance = 10;
-  // cameraControls.update();
-
-}
-// create variable controller
-// var controls = new function() {
-//   this.rotationSpeed = 0.02;
-//   this.bouncingSpeed = 0.03;
-//   this.addCube = function() {
-//     var cubeSize = Math.ceil(Math.random() * 3);
-//     var cube = new THREE.Mesh(
-//       new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize),
-//       new THREE.MeshPhongMaterial({ color: Math.random() * 0xffffff })
-//     )
-//     cube.position.x = -20 + Math.round(Math.random() * planeGeometry.parameters.width);
-//     cube.position.y = Math.round(Math.random() * 5);
-//     cube.position.z = -30 + Math.round(Math.random() * planeGeometry.parameters.height);
-//     scene.add(cube);
-//   };
-//
-// }
-//
-// var gui = new dat.GUI();
-// gui.add(controls, 'rotationSpeed', 0, 0.5);
-// gui.add(controls, 'bouncingSpeed', 0, 0.5);
-// gui.add(controls, 'addCube');
-
 // render scene --------------------------------------------------------
 
 function initStats() {
-// attach stats window to DOM
-var stats = new Stats();
-stats.setMode(0); // 0 for FPS, 1 for rendering time
-stats.domElement.style.position = 'absolute';
-stats.domElement.style.left = '0px';
-stats.domElement.style.right = '0px';
-$('#Stats-output').append(stats.domElement);
-return stats;
+  // attach stats window to DOM
+  var stats = new Stats();
+  stats.setMode(0); // 0 for FPS, 1 for rendering time
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.left = '0px';
+  stats.domElement.style.right = '0px';
+  $('#Stats-output').append(stats.domElement);
+  return stats;
 };

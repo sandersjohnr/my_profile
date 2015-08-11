@@ -3,7 +3,6 @@ body {
   margin: 0;
   overflow: hidden;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  font-weight: 300;
 }
 
 a {
@@ -15,5 +14,13 @@ nav {
   height: 50px;
   width: 100%;
   background-color: black;
-  border: 0 2px 0 0 solid white
+  box-shadow: 0px 3px 5px white;
+}
+
+nav .reset {
+  color: white;
+  z-index: 99;
+  font-weight: bold;
+  padding: 10px;
+  margin: 0 auto;
 }
