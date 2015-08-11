@@ -1,0 +1,19 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+  overflow: hidden;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+}
+
+a {
+  display: none;
+}
+
+nav {
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  background-color: black;
+  border: 0 2px 0 0 solid white
+}
