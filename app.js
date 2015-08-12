@@ -23,7 +23,7 @@ var SPOT_DISTANCE = 1000;
 
 var PANEL_Y = 10;
 var SCENE_WIDTH = 90;
-var TRANS_DURATION = 1750;
+var TRANS_DURATION = 1000;
 
 var INFO_FINAL_Y = 4.5;
 var INFO_DURATION = TRANS_DURATION;
@@ -32,7 +32,7 @@ var INFO_DELAY = 0;
 // initialize globals
 var camera, cameraControls, scene, renderer, fog;
 var info_1, panel_1, panel_2, panel_3, mirrorMesh, groundMirror, selectableObjects;
-var spotOne, spotTwo, spotThree;
+var spotOne, spotTwo, spotThree, spotFour;
 var Views = {};
 var Tweens = {};
 
@@ -53,11 +53,11 @@ function init() {
   camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 
   // controls
-  // cameraControls = new THREE.FlyControls(camera);
-    // cameraControls.movementSpeed = 135;
-    // cameraControls.rollSpeed = Math.PI / 12;
-    // cameraControls.autoForward = false;
-    // cameraControls.dragToLook = true;
+  cameraControls = new THREE.FlyControls(camera);
+    cameraControls.movementSpeed = 135;
+    cameraControls.rollSpeed = Math.PI / 12;
+    cameraControls.autoForward = false;
+    cameraControls.dragToLook = true;
 
   // attach to DOM
   document.getElementById('WebGL-output').appendChild(renderer.domElement);
@@ -143,7 +143,7 @@ function fillScene() {
   scene.add(info_3);
 
   about_panel = createMesh(panelGeo, 'hoodz.png');
-  about_panel.position.x = -30;
+  about_panel.position.x = -50;
   about_panel.position.y = 10;
   about_panel.position.z = SCENE_WIDTH / 3;
   about_panel.rotation.y = - Math.PI / 2;
@@ -179,6 +179,12 @@ function fillScene() {
       spotThree.distance = SPOT_DISTANCE;
       scene.add(spotThree);
 
+  var spotFour = new THREE.SpotLight( 0xffffff );
+      spotFour.position.set(-100, 0, about_panel.position.z);
+      spotFour.intensity = 3;
+      spotFour.distance =120;
+      scene.add(spotFour);
+
   spotOne.angle = SPOT_ANGLE;
   spotTwo.angle = SPOT_ANGLE;
   spotThree.angle = SPOT_ANGLE;
@@ -186,10 +192,11 @@ function fillScene() {
   spotOne.target = panel_1;
   spotTwo.target = panel_2;
   spotThree.target = panel_3;
+  spotFour.target = about_panel;
 
-  camera.position.set( -84.75,6.14,30 );
-  camera.lookAt(about_panel.position);
-  // camera.rotation.set( -1.5708,-1.4758,-1.5708 );
+  camera.position.set( -96.69, 5.412, 30 );
+  // camera.lookAt(about_panel.position);
+  camera.rotation.set( 1.574, -1.4731, 1.5736 );
 
 
 
@@ -200,7 +207,6 @@ function fillScene() {
   document.addEventListener('mousedown', mouseDown , false);
   document.addEventListener('mousemove', mouseMove, false);
   document.getElementById('reset').addEventListener('click', restoreAbout, false);
-
 
   var projector = new THREE.Projector();
 
@@ -218,7 +224,6 @@ function fillScene() {
     raycaster.setFromCamera( mouse, camera );
 
     // the object the ray intersects is the clicked panel
-    debugger;
     var intersects = raycaster.intersectObjects( selectableObjects );
     if (intersects.length > 0) {
       var selectedObj = intersects[0].object;
@@ -228,41 +233,55 @@ function fillScene() {
         resetInfoTwo.start();
         resetInfoThree.start();
         camToCenterPos.start();
-        camRotToPanelTwo.start();
+        // camToCenterRot.start();
         camRotToPanelOne.start();
         showInfoOne.start()
+        selectableObjects = [info_1, panel_2, panel_3, panel_1];
 
       } else if (selectedObj == panel_2) {
         resetInfoOne.start()
+        showInfoTwo.start();
         resetInfoThree.start();
         camToCenterPos.start();
-        camRotToPanelTwo.start();
-        showInfoTwo.start();
+        camToCenterRot.start();
+        selectableObjects = [ panel_1, panel_2, panel_3, info_2];
         // document.getElementById('hoodz').click();
 
       } else if (selectedObj == panel_3) {
         resetInfoOne.start();
         resetInfoTwo.start();
         camToCenterPos.start();
-        camRotToPanelTwo.start();
+        // camToCenterRot.start();
         camRotToPanelThree.start();
         showInfoThree.start();
+        selectableObjects = [ panel_1, panel_2, info_3];
         // document.getElementById('stretchme').click();
 
       } else if (selectedObj == about_panel) {
+        aboutSlideDown.start().chain(camToAllPanels);
         selectableObjects = [ panel_1, panel_2, panel_3 ];
-        // aboutSlideDown.start();
-        camToAllPanels.start();
+
       }
+      else if (selectedObj == info_1 || selectedObj ==info_2|| selectedObj == info_3) {
+      //
+        resetInfoOne.start()
+        resetInfoTwo.start()
+        resetInfoThree.start()
+        camToAboutPos.start().chain(aboutSlideUp)
+        camToAboutRot.start();
+      //   camToAllPanels.start();
+        selectableObjects = [ about_panel ];
+      //
+      }
+    // if not clicking on a selectable object
     } else {
-        // camToAllPanels.start();
-        // camRotToPanelTwo.start();
+        // camToAboutRot.start();
         // resetInfoOne.start();
         // resetInfoTwo.start();
         // resetInfoThree.start();
-        spotOne.target = panel_1;
-        spotTwo.target = panel_2;
-        spotThree.target = panel_3;
+        // spotOne.target = panel_1;
+        // spotTwo.target = panel_2;
+        // spotThree.target = panel_3;
     }
   };
 
@@ -317,57 +336,59 @@ function fillScene() {
   };
 
   function restoreAbout(){
-
-    // aboutSlideUp().start();
-    camToAboutPos.start();
-    camToAboutRot.start();
+    camToAboutRot.start()
+    camToAboutPos.start().chain(aboutSlideUp);
     selectableObjects = [ about_panel ];
 
   };
 
 
-  function aboutListener () {
 
-
-    // raytracer
-
-    // ######
-
-    // aboutSlideDown().start();
-    camToAllPanels.start();
-    camRotToPanelTwo.start();
-    document.removeEventListener('mousedown');
-    document.addEventListener('mousedown', mouseDown, false);
-    document.addEventListener('mousemove', mouseMove, false);
-
-
-  }
+  //
+  // function aboutListener () {
+  //
+  //
+  //   // raytracer
+  //
+  //   // ######
+  //
+  //   // aboutSlideDown().start();
+  //   camToAllPanels.start();
+  //   camToCenterRot.start();
+  //   document.removeEventListener('mousedown');
+  //   document.addEventListener('mousedown', mouseDown, false);
+  //   document.addEventListener('mousemove', mouseMove, false);
+  //
+  //
+  // }
 }
 
 function createAnimations() {
   // var elasticInOut = new TWEEN.Easing.Elastic.InOut();
 
   camToAllPanels = new TWEEN.Tween(camera.position)
-    .to({ x: -60, y: 6.14, z: 30 }, TRANS_DURATION);
+    .to({ x: -60, y: 6.14, z: 30 }, 1000);
 
   camToCenterPos = new TWEEN.Tween(camera.position)
-    .to({ x: -6.542, y: 15.137, z: 29.982 }, TRANS_DURATION);
+    .to({ x: -6.542, y: 15.137, z: 29.982 }, 1000);
 
-  camRotToPanelOne = new TWEEN.Tween(camera.rotation)
-    .to({ x: -0.1564, y: -0.9931, z: -0.1985 }, TRANS_DURATION);
+  camRotToPanelOne = new TWEEN.Tween(camera.quaternion)
+    .to({x: -0.021287458584909436, y: -0.479407732339669, z: -0.04982128665781585, w: 0.8759183236327985 }, TRANS_DURATION);
 
-  camRotToPanelTwo = new TWEEN.Tween(camera.rotation)
-    .to({ x: -1.6, y: -1.4844, z: -1.6 }, TRANS_DURATION);
+  camToCenterRot = new TWEEN.Tween(camera.quaternion)
+    .to({x: -0.04393434405746349, y: -0.7014426078843721, z: -0.04648062502507888, w: 0.7098504016719926}, TRANS_DURATION);
 
-  camRotToPanelThree = new TWEEN.Tween(camera.rotation)
-    .to({ x: -2.997, y: -0.9680, z: -2.9886 }, TRANS_DURATION);
+  camRotToPanelThree = new TWEEN.Tween(camera.quaternion)
+    .to({x: -0.03395, y: -0.882815433035953, z: -0.02828177804576746, w: 0.467636822483294}, TRANS_DURATION);
 
   camToAboutPos = new TWEEN.Tween(camera.position)
-    .to({ x: -84.75, y: 6.14, z: 30 }, TRANS_DURATION);
-  camToAboutRot = new TWEEN.Tween(camera.rotation)
-    .to({z: 1.365 }, TRANS_DURATION);
+    .to({ x: -96.69, y: 5.412, z: 30 }, TRANS_DURATION);
+  camToAboutRot = new TWEEN.Tween(camera.quaternion)
+    .to({ x: 0.03467, y: -0.70637, z: 0.03439, w: 0.70616 }, TRANS_DURATION);
+  // { x: 1.574, y: -1.4731, z: 1.5736 }
 
-
+  aboutSlideUp = new TWEEN.Tween(about_panel.position).to({y:10}, 1000);
+  aboutSlideDown = new TWEEN.Tween(about_panel.position).to({y:-10}, 1000);
 
   showInfoOne = new TWEEN.Tween(info_1.position).to({ y: INFO_FINAL_Y }, INFO_DURATION)
     .delay(INFO_DELAY);
@@ -393,7 +414,7 @@ function render() {
 var frame = 0;
 function update() {
   frame+=1;
-  if (!(frame % 120)) console.log(camera.position, camera.rotation);
+  if (!(frame % 120)) console.log(camera.position, camera.quaternion);
   TWEEN.update();
   requestAnimationFrame( update );
   // stats.update();
