@@ -5,35 +5,40 @@
     <title>John Sanders | Web Developer</title>
 
     <link rel="stylesheet" href="./style.css" charset="utf-8">
+    <script src="assets/fonts/helvetiker_regular.typeface.js"></script>
+    <script src="assets/fonts/helvetiker_bold.typeface.js"></script>
 
     <script src="libraries/three.min.js"></script>
     <script src="libraries/jquery-2.1.4.js"></script>
     <script src="libraries/Mirror.js"></script>
-    <script src='webgl_libs/tween.js/tween.min.js'></script>
-    <script src="libs/stats.js"></script>
-    <script src="libs/dat.gui.js"></script>
-    <script src="libs/Projector.js"></script>
-    <script src="libs/TrackballControls.js"></script>
-    <script src="libs/OrbitControls.js"></script>
-    <script src="libs/FlyControls.js"></script>
-    <script src="libraries/FirstPersonControls.js"></script>
-    <script src="assets/fonts/helvetiker_regular.typeface.js"></script>
-    <script src="assets/fonts/helvetiker_bold.typeface.js"></script>
-    <script src="libraries/THREEx.WindowResize.js"></script>
+    <script src='libraries/tween.min.js'></script>
+    <script src="libraries/stats.js"></script>
+    <script src="libraries/dat.gui.js"></script>
     <script src="libraries/Projector.js"></script>
+    <script src="libraries/TrackballControls.js"></script>
+    <script src="libraries/OrbitControls.js"></script>
+    <script src="libraries/FlyControls.js"></script>
+    <script src="libraries/FirstPersonControls.js"></script>
+    <script src="libraries/THREEx.WindowResize.js"></script>
 
   </head>
   <body>
-    <nav>
-      <div class="nav-item about"> </div>
-      <div id="reset" class="nav-item ">RESET</div>
-      <div class="nav-item contact"> </div>
+
+    <nav id="nav-menu">
+      <ul>
+        <li><div id="home"     class="nav-item left">home</div></li>
+        <li><div id="projects" class="nav-item center">projects</div></li>
+        <li><div id="contact"  class="nav-item right">contact</div></li>
+      </ul>
     </nav>
+
+
     <div id="Stats-output"></div>
     <div id="WebGL-output"></div>
-    <a id="featur" href="http://featur.herokuapp.com"></a>
+
+    <!-- <a id="featur" href="http://featur.herokuapp.com"></a>
     <a id="hoodz" href="http://hoodz.herokuapp.com"></a>
-    <a id="stretchme" href="http://stretchme.herokuapp.com"></a>
+    <a id="stretchme" href="http://stretchme.herokuapp.com"></a> -->
     <script src="app.js">
     </script>
   </body>
