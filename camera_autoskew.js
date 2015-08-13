@@ -1,0 +1,28 @@
+document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+    }
+
+
+    function onDocumentMouseMove(event) {
+
+      mouseX = ( event.clientX - windowHalfX );
+      mouseY = ( event.clientY - windowHalfY );
+
+    }
+
+
+    function animate() {
+
+      requestAnimationFrame( animate );
+
+      render();
+      stats.update();
+
+    }
+
+    function render() {
+
+      camera.position.x += ( mouseX - camera.position.x ) * .05;
+      camera.position.y += ( - ( mouseY - 200) - camera.position.y ) * .05;
+
+      camera.lookAt( scene.position );
