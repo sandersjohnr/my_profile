@@ -78,7 +78,7 @@ function fillScene() {
   mirrorMesh = new THREE.Mesh( planeGeo, groundMirror.material );
   mirrorMesh.add(groundMirror);
   mirrorMesh.rotateX( -Math.PI/2 );
-  mirrorMesh.position.set(50, 0, 50);
+  mirrorMesh.position.set(0, 0, 50);
   scene.add(mirrorMesh);
 
   // panels
@@ -252,11 +252,10 @@ function fillScene() {
 
       }
       else if (selectedObj == info_1 || selectedObj ==info_2|| selectedObj == info_3) {
-        resetInfoOne.start();
-        resetInfoTwo.start();
-        resetInfoThree.start();
-        navigation.goProjects();
-        selectableObjects = [ panel_1, panel_2, panel_3 ];
+
+        navigation.goHome();
+        // selectableObjects = [ panel_1, panel_2, panel_3 ];
+        selectableObjects = [ about_panel ];
         splitSpots();
 
       }
@@ -264,6 +263,26 @@ function fillScene() {
     } else {
         // fill in if event occurs when clicking on nothing
     }
+  };
+
+  function Navigation() {
+    this.goHome = function() {
+      resetInfoOne.start();
+      resetInfoTwo.start();
+      resetInfoThree.start();
+      camToAboutRot.start();
+      camToAboutPos.start();
+      aboutSlideUp.delay(800).start();
+      selectableObjects = [ about_panel ];
+    };
+    this.goProjects = function() {
+      aboutSlideDown.start()
+      camToAllPanelsPos.delay(0).start();
+      camToAllPanelsRot.delay(0).start();
+      selectableObjects = [ panel_1, panel_2, panel_3 ];
+    };
+
+    return this;
   };
 
   function mouseMove(event) {
@@ -313,23 +332,7 @@ function fillScene() {
     }
   };
 
-  function Navigation() {
-    this.goHome = function() {
-      console.log('fired');
-      camToAboutRot.start()
-      camToAboutPos.start()
-      aboutSlideUp.delay(800).start();
-      selectableObjects = [ about_panel ];
-    };
-    this.goProjects = function() {
-      aboutSlideDown.start()
-      camToAllPanelsPos.delay(0).start();
-      camToAllPanelsRot.delay(0).start();
-      selectableObjects = [ panel_1, panel_2, panel_3 ];
-    };
 
-    return this;
-  };
 
   function splitSpots() {
     spotOne.target = panel_1;
@@ -462,6 +465,8 @@ function initStats() {
 // RENDER LOOP
 
 function render() {
+  swivelControl();
+
   // helper module to rerender on window resize
   THREEx.WindowResize(renderer, camera);
   // render the mirror
@@ -474,7 +479,6 @@ function render() {
 function update() {
   // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
   // var delta = clock.getDelta();
-  swivelControl();
 
   TWEEN.update();
   // stats.update();
@@ -488,11 +492,9 @@ function update() {
 }
 
 function swivelControl() {
-  camera.position.z += ( mouseX - camera.position.z ) * .000025;
-  camera.position.y += ( -  mouseY - camera.position.y ) * .000025;
-
-  // call
-
+  camera.position.z += ( mouseX - camera.position.z ) * .000001 * 30;
+  (camera.position.y > 12) ? camera.position.y += ( -  mouseY - camera.position.y ) * .000001 * 30
+                          : camera.position.y = 12;
 }
 
 document.addEventListener( 'mousemove', function onMouseMove() {
@@ -505,6 +507,7 @@ fillScene();
 createAnimations();
 update();
 
+// document.getElementByTagName('footer'). click(function() { location.reload(); })
 window.onresize = function(){
 
   location.reload();

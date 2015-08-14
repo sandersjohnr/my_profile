@@ -2,11 +2,27 @@ body {
   box-sizing: border-box;
   margin: 0;
   overflow: hidden;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 a {
   display: none;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  font-size: 10px;
+  height: 12px;
+  background-blend-mode: normal;
+  z-index:999;
+  color: cornflowerblue;
+  font-family: Courier, serif;
+  margin: 0 auto;
+  text-align: center;
+  cursor: pointer;
 }
 
 nav {
@@ -19,6 +35,7 @@ nav {
   font-weight: bold;
   color: white;
   z-index: 100;
+  display: none;
 }
 
 nav ul {
