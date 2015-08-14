@@ -2,6 +2,9 @@ document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
     }
 
+    windowHalfX = WIDTH / 2;
+    windowHalfY = HEIGHT / 2;
+
 
     function onDocumentMouseMove(event) {
 
@@ -20,7 +23,7 @@ document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
     }
 
-    function render() {
+    function swivel() {
 
       camera.position.x += ( mouseX - camera.position.x ) * .05;
       camera.position.y += ( - ( mouseY - 200) - camera.position.y ) * .05;

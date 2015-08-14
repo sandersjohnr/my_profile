@@ -34,9 +34,11 @@ var camera, cameraControls, scene, renderer, fog;
 var panel_1, panel_2, panel_3, mirrorMesh, groundMirror, selectableObjects;
 var spotOne, spotTwo, spotThree, spotFour;
 var frame = 0;
+var mouseX, mouseY;
 
 
 function init() {
+
   // renderer
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio( PIXEL_RATIO );
@@ -67,7 +69,7 @@ function init() {
 function fillScene() {
 
   // mirror
-  var planeGeo = new THREE.PlaneBufferGeometry(250, 300, 1, 1);
+  var planeGeo = new THREE.PlaneBufferGeometry(300, 300, 1, 1);
   groundMirror = new THREE.Mirror( renderer, camera,
     { clipBias: 0.003,
       textureWidth: WIDTH,
@@ -81,9 +83,9 @@ function fillScene() {
 
   // panels
   var panelGeo = new THREE.PlaneBufferGeometry(18 * 1.6, 18, 1, 1);
-  var panel_1 = createMesh(panelGeo, 'featur.png');
-  var panel_2 = createMesh(panelGeo, 'hoodz.png');
-  var panel_3 = createMesh(panelGeo, 'stretchme2.png');
+  var panel_1 = createMesh( panelGeo, 'featur.png' );
+  var panel_2 = createMesh( panelGeo, 'hoodz.png' );
+  var panel_3 = createMesh( panelGeo, 'stretchme2.png' );
 
   panel_1.rotation.y = Math.PI / - 2 + Math.PI/8;
   panel_2.rotation.y = Math.PI / -2;
@@ -472,6 +474,7 @@ function render() {
 function update() {
   // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
   // var delta = clock.getDelta();
+  swivelControl();
 
   TWEEN.update();
   // stats.update();
@@ -479,9 +482,23 @@ function update() {
 
   // grab frame from browser
   requestAnimationFrame( update );
+
   render();
 
 }
+
+function swivelControl() {
+  camera.position.z += ( mouseX - camera.position.z ) * .000025;
+  camera.position.y += ( -  mouseY - camera.position.y ) * .000025;
+
+  // call
+
+}
+
+document.addEventListener( 'mousemove', function onMouseMove() {
+  mouseX = ( event.clientX - WIDTH / 2 );
+  mouseY = ( event.clientY - HEIGHT / 2 );
+});
 
 init();
 fillScene();
