@@ -15,11 +15,19 @@
     <script src="libraries/stats.js"></script>
     <script src="libraries/dat.gui.js"></script>
     <script src="libraries/Projector.js"></script>
-    <script src="libraries/TrackballControls.js"></script>
-    <script src="libraries/OrbitControls.js"></script>
     <script src="libraries/FlyControls.js"></script>
-    <script src="libraries/FirstPersonControls.js"></script>
-    <script src="libraries/THREEx.WindowResize.js"></script>
+    <!-- <script src="libraries/TrackballControls.js"></script> -->
+    <!-- <script src="libraries/OrbitControls.js"></script> -->
+    <!-- <script src="libraries/FirstPersonControls.js"></script> -->
+    <!-- <script src="libraries/THREEx.WindowResize.js"></script> -->
+    <script type="text/javascript" src="libraries/EffectComposer.js"></script>
+    <script type="text/javascript" src="libraries/MaskPass.js"></script>
+    <script type="text/javascript" src="libraries/RenderPass.js"></script>
+    <script type="text/javascript" src="libraries/CopyShader.js"></script>
+    <script type="text/javascript" src="libraries/ShaderPass.js"></script>
+    <script type="text/javascript" src="libraries/BloomPass.js"></script>
+    <script type="text/javascript" src="libraries/FilmShader.js"></script>
+    <script type="text/javascript" src="libraries/ConvolutionShader.js"></script>
 
   </head>
   <body>
@@ -32,14 +40,18 @@
       </ul>
     </nav>
 
-
     <div id="Stats-output"></div>
     <div id="WebGL-output"></div>
-    <footer id="reset" onClick="location.reload()">reset</footer>
-    <!-- <a id="featur" href="http://featur.herokuapp.com"></a>
-    <a id="hoodz" href="http://hoodz.herokuapp.com"></a>
-    <a id="stretchme" href="http://stretchme.herokuapp.com"></a> -->
-    <script src="app.js">
-    </script>
+
+    <footer>
+      <div id="reset" onClick="location.reload()"> reset </div>
+      <div id="copyright" style="float: right;">&copy; 2015 John Sanders - made with three.js </div>
+    </footer>
+
+    <a id="featur" href="http://featur.herokuapp.com" target="_blank"></a>
+    <a id="hoodz" href="http://hoodz.herokuapp.com" target="_blank"></a>
+    <a id="stretchme" href="http://stretchme.herokuapp.com" target="_blank"></a>
+
+    <script src="app.js"></script>
   </body>
 </html>

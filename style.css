@@ -14,7 +14,7 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  font-size: 10px;
+  font-size: 8px;
   height: 12px;
   background-blend-mode: normal;
   z-index:999;
@@ -24,6 +24,8 @@ footer {
   text-align: center;
   cursor: pointer;
 }
+
+#reset { position: absolute; left: 0; }
 
 nav {
   position: absolute;
