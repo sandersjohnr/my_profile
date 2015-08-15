@@ -110,7 +110,7 @@ function fillScene() {
   scene.add(mirrorMesh);
 
   // panels
-  var panelGeo = new THREE.PlaneBufferGeometry(18 * 1.6, 18, 1, 1);
+  var panelGeo = new THREE.BoxGeometry(18 * 1.6, 18, 1, 1);
   var panel_1 = createMesh( panelGeo, 'featur_low.jpg' );
   var panel_2 = createMesh( panelGeo, 'hoodz_low.jpg' );
   var panel_3 = createMesh( panelGeo, 'stretchme2_low.jpg' );
@@ -131,7 +131,7 @@ function fillScene() {
   panel_2.position.z = SCENE_WIDTH / 3;
   panel_3.position.z = 2 * SCENE_WIDTH / 3;
 
-  var infoGeo = new THREE.PlaneBufferGeometry(8 * 1.6, 8, 1, 1);
+  var infoGeo = new THREE.BoxGeometry(8 * 1.6, 8, 1, 1);
   info_1 = createMesh(infoGeo, 'featur_slide.jpg');
   info_1.position.set(29, -5, -7);
   info_1.rotation.y = -Math.PI/ 2 + 0.7;
@@ -149,7 +149,7 @@ function fillScene() {
   info_3.rotation.y = - Math.PI / 2 - .7;
 
   var linkImg = 'project_link.jpg';
-  var linkGeo = new THREE.PlaneBufferGeometry(3, 3, 1, 1);
+  var linkGeo = new THREE.BoxGeometry(3, 3, 1, 1);
 
   // link_1 = new THREE.Mesh(linkGeo, new THREE.MeshLambertMaterial(0x00ffff));
   // link_2 = new THREE.Mesh(linkGeo, new THREE.MeshLambertMaterial(0xffff00));
