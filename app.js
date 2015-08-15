@@ -146,6 +146,7 @@ function fillScene() {
   info_3.position.z = 2 * SCENE_WIDTH / 3 + 6;
   info_3.rotation.y = - Math.PI / 2 - .7;
 
+
   var linkGeo = new THREE.BoxGeometry(3, 3, 1, 1);
 
   link_1 = createMesh( linkGeo, 'site_link.jpg' );
