@@ -32,7 +32,7 @@ var LINK_FINAL_Y = 1.5;
 var LINK_DURATION = TRANS_DURATION;
 var LINK_DELAY = 0;
 
-var SWIVEL_SPEED = 50;
+var SWIVEL_SPEED = 30;
 var LIGHT_SPEED = 0.03;
 
 // initialize globals
@@ -57,13 +57,11 @@ function init() {
   // scene
   scene = new THREE.Scene();
   // axes
-  var axes = new THREE.AxisHelper(20);
+  // var axes = new THREE.AxisHelper(20);
   // scene.add(axes);
 
   // camera
   camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-
-  // camera.quaternion.set(-0.065905, -0.7036826401752501, -0.06613654855920603, 0.704352969077514);
 
   // controls
   cameraControls = new THREE.FlyControls(camera);
@@ -110,7 +108,7 @@ function fillScene() {
   scene.add(mirrorMesh);
 
   // panels
-  var panelGeo = new THREE.PlaneBufferGeometry(18 * 1.6, 18, 1, 1);
+  var panelGeo = new THREE.BoxGeometry(18 * 1.6, 18, 1, 1);
   var panel_1 = createMesh( panelGeo, 'featur_low.jpg' );
   var panel_2 = createMesh( panelGeo, 'hoodz_low.jpg' );
   var panel_3 = createMesh( panelGeo, 'stretchme2_low.jpg' );
@@ -131,7 +129,7 @@ function fillScene() {
   panel_2.position.z = SCENE_WIDTH / 3;
   panel_3.position.z = 2 * SCENE_WIDTH / 3;
 
-  var infoGeo = new THREE.PlaneBufferGeometry(8 * 1.6, 8, 1, 1);
+  var infoGeo = new THREE.BoxGeometry(8 * 1.6, 8, 1, 1);
   info_1 = createMesh(infoGeo, 'featur_slide.jpg');
   info_1.position.set(29, -5, -7);
   info_1.rotation.y = -Math.PI/ 2 + 0.7;
@@ -148,36 +146,37 @@ function fillScene() {
   info_3.position.z = 2 * SCENE_WIDTH / 3 + 6;
   info_3.rotation.y = - Math.PI / 2 - .7;
 
-  var linkImg = 'project_link.jpg';
-  var linkGeo = new THREE.PlaneBufferGeometry(3, 3, 1, 1);
+  var linkGeo = new THREE.BoxGeometry(3, 3, 1, 1);
 
-  // link_1 = new THREE.Mesh(linkGeo, new THREE.MeshLambertMaterial(0x00ffff));
-  // link_2 = new THREE.Mesh(linkGeo, new THREE.MeshLambertMaterial(0xffff00));
-  // link_3 = new THREE.Mesh(linkGeo, new THREE.MeshLambertMaterial(0xff00));
   link_1 = createMesh( linkGeo, 'site_link.jpg' );
   link_2 = createMesh( linkGeo, 'site_link.jpg' );
   link_3 = createMesh( linkGeo, 'site_link.jpg' );
 
+  contact = createMesh( new THREE.PlaneBufferGeometry(5*1.6, 5, 1), 'contact.jpg' );
+  contact.rotation.y = -Math.PI/2;
+  contact.position.set(-59,-3,24);
+  scene.add(contact);
+
   link_1.material.emissive = new THREE.Color( 0x81648D );
   link_2.material.emissive = new THREE.Color( 0x81648D );
   link_3.material.emissive = new THREE.Color( 0x81648D );
-
+  contact.material.emissive = new THREE.Color( 0xD5790E );
 
   link_1.rotation.y = Math.PI / - 2 + 0.7;
-  link_1.position.x = 40;
-  link_1.position.y = -3;
-  link_1.position.z = 8.0;
-
   link_2.rotation.y = Math.PI / - 2 + 0.20
-  link_2.position.x = 39.5;
-  link_2.position.y = -3;
-  link_2.position.z = 40;
-
   link_3.rotation.y = Math.PI / - 2 - 0.7;
+
+  link_1.position.x = 40;
+  link_2.position.x = 39.5;
   link_3.position.x = 41;
-  link_3.position.y = -3;
+
+  link_1.position.z = 8.0;
+  link_2.position.z = 40;
   link_3.position.z = 49;
 
+  link_1.position.y = -2;
+  link_2.position.y = -2;
+  link_3.position.y = -2;
 
   scene.add(link_1);
   scene.add(link_2);
@@ -219,9 +218,6 @@ function fillScene() {
   aboutSpot3.position.y = 17;
   aboutSpot3.position.z = 60;
 
-  // aboutSpot1.target.position.set(about_panel.position)
-  // aboutSpot2.target.position.set(about_panel.position)
-  // aboutSpot3.target.position.set(about_panel.position)
 
   // controls = new function() {
   //   this.position1 = 46;
@@ -241,9 +237,6 @@ function fillScene() {
   //
   //
 
-
-  // init selectables for raycaster
-  selectableObjects = [ about_panel ];
 
 
 
@@ -295,12 +288,11 @@ function fillScene() {
 
   document.addEventListener('mousedown', mouseDown , false);
   document.addEventListener('mousemove', mouseMove, false);
-  // document.getElementById('home').addEventListener('click', navigation.goHome, false);
-  // document.getElementById('projects').addEventListener('click', navigation.goProjects, false);
-  // document.getElementById('contact').addEventListener('click', navigation.goContact, false);
 
   var projector = new THREE.Projector();
   var mouseover = false;
+  // init selectables for raycaster
+  selectableObjects = [ about_panel ];
 
   // when clicked, panel takes user to corresponding project page
   function mouseDown (event) {
@@ -334,6 +326,7 @@ function fillScene() {
         spotThree.target = panel_1;
 
       } else if (selectedObj == panel_2) {
+
         resetInfoOne.start()
         resetInfoThree.start();
         resetLinkOne.start();
@@ -348,6 +341,7 @@ function fillScene() {
         spotThree.target = panel_2;
 
       } else if (selectedObj == panel_3) {
+
         resetInfoOne.start();
         resetInfoTwo.start();
         resetLinkOne.start();
@@ -365,13 +359,12 @@ function fillScene() {
         navigation.goProjects();
 
       }
-      else if (selectedObj == info_1 || selectedObj ==info_2|| selectedObj == info_3) {
-
+      else if (selectedObj == info_1 || selectedObj == info_2|| selectedObj == info_3) {
         resetLinkOne.start();
         resetLinkTwo.start();
         resetLinkThree.start();
         navigation.goHome();
-        selectableObjects = [ about_panel ];
+        selectableObjects = [ about_panel, contact ];
         splitSpots();
 
       }
@@ -387,6 +380,10 @@ function fillScene() {
         document.getElementById('stretchme').click();
 
       }
+      else if (selectedObj == contact) {
+        document.getElementById('contact').click();
+
+      }
     } else {
         // fill in if event occurs when clicking on nothing
     }
@@ -397,13 +394,15 @@ function fillScene() {
       resetInfoOne.start();
       resetInfoTwo.start();
       resetInfoThree.start();
+      showContact.delay(1500).start();
       camToAboutRot.start();
       camToAboutPos.start();
       aboutSlideUp.delay(800).start();
       selectableObjects = [ about_panel ];
     };
     this.goProjects = function() {
-      aboutSlideDown.start()
+      aboutSlideDown.start();
+      resetContact.start();
       camToAllPanelsPos.delay(0).start();
       camToAllPanelsRot.delay(0).start();
       selectableObjects = [ panel_1, panel_2, panel_3 ];
@@ -424,7 +423,6 @@ function fillScene() {
     var mouse = new THREE.Vector2();
     mouse.x = ( event.clientX / WIDTH ) * 2 - 1;
     mouse.y = - ( event.clientY / HEIGHT ) * 2 + 1;
-
 
     raycaster.setFromCamera( mouse, camera );
     $body = $('body');
@@ -481,7 +479,7 @@ function createAnimations() {
     .to({ x: -59.54352335165649
         , y: 14.25687419637257
         , z: 30.00209916590959 }
-       , TRANS_DURATION)
+        , TRANS_DURATION)
     .easing(cubicInOut);
 
   camToAllPanelsRot = new TWEEN.Tween(camera.quaternion)
@@ -537,65 +535,66 @@ function createAnimations() {
         , w: 0.704352969077514 }
         , TRANS_DURATION )
     .easing(cubicInOut);
-  // camToAboutPos = new TWEEN.Tween(camera.position)
-  //   .to({ x: -106.11401464184985, y: 22.05040950035202, z: 29.976875354730442 }
-  //       , TRANS_DURATION)
-  //   .easing(cubicInOut);
-  //
-  // camToAboutRot = new TWEEN.Tween(camera.quaternion)
-  //   .to({ x: -0.07214662217400392, y: -0.7027035804678816, z: -0.07225330980692601, w: 0.7041178893682827 }
-  //       , TRANS_DURATION )
-  //   .easing(cubicInOut);
 
   aboutSlideUp = new TWEEN.Tween(about_panel.position)
-    .to({ y: 10 }, TRANS_DURATION / 1.7);
+    .to({ y: 10 }, TRANS_DURATION / 1.7)
+    .easing(cubicInOut);
 
   aboutSlideDown = new TWEEN.Tween(about_panel.position)
-    .to({ y: -10 }, TRANS_DURATION / 1.7);
+    .to({ y: -10 }, TRANS_DURATION / 1.7).easing(cubicInOut);
 
   showInfoOne = new TWEEN.Tween(info_1.position)
-    .to({ y: INFO_FINAL_Y }, INFO_DURATION)
+    .to({ y: INFO_FINAL_Y }, INFO_DURATION).easing(cubicInOut)
     .delay( INFO_DELAY );
 
   showInfoTwo = new TWEEN.Tween(info_2.position)
-    .to({ y: INFO_FINAL_Y }, INFO_DURATION)
+    .to({ y: INFO_FINAL_Y }, INFO_DURATION).easing(cubicInOut)
     .delay(INFO_DELAY );
 
   showInfoThree = new TWEEN.Tween(info_3.position)
-    .to({ y: INFO_FINAL_Y }, INFO_DURATION)
+    .to({ y: INFO_FINAL_Y }, INFO_DURATION).easing(cubicInOut)
     .delay(INFO_DELAY);
 
   resetInfoOne = new TWEEN.Tween(info_1.position)
-    .to({ y: -5 }, INFO_DURATION * 0.5)
+    .to({ y: -5 }, INFO_DURATION * 0.5).easing(cubicInOut)
 
   resetInfoTwo = new TWEEN.Tween(info_2.position)
-    .to({ y: -5 }, INFO_DURATION * 0.5)
+    .to({ y: -5 }, INFO_DURATION * 0.5).easing(cubicInOut)
 
   resetInfoThree = new TWEEN.Tween(info_3.position)
-    .to({ y: -5 }, INFO_DURATION * 0.5)
+    .to({ y: -5 }, INFO_DURATION * 0.5).easing(cubicInOut)
 
   showLinkOne = new TWEEN.Tween(link_1.position)
-    .to({ y: LINK_FINAL_Y }, LINK_DURATION)
+    .to({ y: LINK_FINAL_Y }, LINK_DURATION).easing(cubicInOut)
     .delay(LINK_DELAY);
+
   showLinkTwo = new TWEEN.Tween(link_2.position)
-    .to({ y: LINK_FINAL_Y }, LINK_DURATION)
+    .to({ y: LINK_FINAL_Y }, LINK_DURATION).easing(cubicInOut)
     .delay(LINK_DELAY);
+
   showLinkThree = new TWEEN.Tween(link_3.position)
-    .to({ y: LINK_FINAL_Y }, LINK_DURATION)
+    .to({ y: LINK_FINAL_Y }, LINK_DURATION).easing(cubicInOut)
     .delay(LINK_DELAY);
+
+  showContact = new TWEEN.Tween(contact.position)
+    .to({ y: 2.5 }, LINK_DURATION * 0.5).easing(cubicInOut);
+
+  resetContact = new TWEEN.Tween(contact.position)
+    .to({ y: -3 }, LINK_DURATION * 0.5).easing(cubicInOut);
+
 
   resetLinkOne = new TWEEN.Tween(link_1.position)
-    .to({ y: -3 }, INFO_DURATION * 0.5)
+    .to({ y: -3 }, INFO_DURATION * 0.5).easing(cubicInOut)
 
   resetLinkTwo = new TWEEN.Tween(link_2.position)
-    .to({ y: -3 }, INFO_DURATION * 0.5)
+    .to({ y: -3 }, INFO_DURATION * 0.5).easing(cubicInOut)
 
   resetLinkThree = new TWEEN.Tween(link_3.position)
-    .to({ y: -3 }, INFO_DURATION * 0.5)
+    .to({ y: -3 }, INFO_DURATION * 0.5).easing(cubicInOut)
 
   //send cam to initial far view
-  camToAboutPos.delay(0).start()
-  camToAboutRot.delay(0).start()
+  camToAboutPos.delay(0).start();
+  camToAboutRot.delay(0).start();
 }
 
 // HELPER FUNCTIONS
@@ -606,8 +605,8 @@ function createMesh(geom, imageFile) {
   var mat = new THREE.MeshLambertMaterial();
   mat.map = texture;
   var mesh = new THREE.Mesh(geom, mat);
-  return mesh;
 
+  return mesh;
 }
 
 function initStats() {
@@ -618,8 +617,8 @@ function initStats() {
   stats.domElement.style.left = '0px';
   stats.domElement.style.right = '0px';
   $('#Stats-output').append(stats.domElement);
-  return stats;
 
+  return stats;
 }
 
 // RENDER LOOP
@@ -627,8 +626,10 @@ function initStats() {
 function render() {
   // helper module to rerender on window resize
   // THREEx.WindowResize(renderer, camera);
+
   // render the mirror
   groundMirror.render();
+
   // render scene
   renderer.render(scene, camera);
   // composer.render(delta)
@@ -645,12 +646,11 @@ function update() {
   TWEEN.update();
   // stats.update();
   delta = clock.getDelta();
-  cameraControls.update(delta);
+  // cameraControls.update(delta);
 
   // grab frame from browser
   requestAnimationFrame( update );
   render();
-
 }
 
 function swivelControl() {
@@ -671,7 +671,6 @@ function lightingControl() {
   aboutSpot1.target = about_panel;
   aboutSpot2.target = about_panel;
   aboutSpot3.target = about_panel;
-
 }
 
 init();
