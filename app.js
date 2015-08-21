@@ -1,50 +1,56 @@
+/*
+ *    MY PROFILE SITE in THREE.js
+ *    @author = enoblue
+ */
 
 // initialize stats module
 // var stats = initStats();
 var clock = new THREE.Clock();
 
 // constants
-var WIDTH = window.innerWidth;
-var HEIGHT = window.innerHeight;
-var PIXEL_RATIO = window.devicePixelRatio;
+var WIDTH = window.innerWidth,
+    HEIGHT = window.innerHeight,
+    PIXEL_RATIO = window.devicePixelRatio,
 
-// camera
-var VIEW_ANGLE = 30;
-var ASPECT = WIDTH / HEIGHT;
-var NEAR = 1;
-var FAR = 500;
-var FOG_NEAR = 70;
-var FOG_FAR = 200;
-var CAMERA_DISTANCE = 60;
+    // camera
+    VIEW_ANGLE = 30,
+    ASPECT = WIDTH / HEIGHT,
+    NEAR = 1,
+    FAR = 500,
+    FOG_NEAR = 70,
+    FOG_FAR = 200,
+    CAMERA_DISTANCE = 60,
 
-var SPOT_ANGLE = Math.PI / 8;
-var SPOT_INTENSITY = 1.5;
-var SPOT_DISTANCE = 1000;
+    // spots
+    SPOT_ANGLE = Math.PI / 8,
+    SPOT_INTENSITY = 1.5,
+    SPOT_DISTANCE = 1000,
 
-var PANEL_Y = 9.6;
-var SCENE_WIDTH = 90;
+    // positioning
+    PANEL_Y = 9.6,
+    SCENE_WIDTH = 90,
 
-var TRANS_DURATION = 2000;
-var INFO_DURATION = TRANS_DURATION;
-var INFO_FINAL_Y = 4.0;
-var INFO_DELAY = 0;
-var LINK_FINAL_Y = 1.5;
-var LINK_DURATION = TRANS_DURATION;
-var LINK_DELAY = 0;
-
-var SWIVEL_SPEED = 30;
-var LIGHT_SPEED = 0.03;
+    // timing
+    TRANS_DURATION = 2000,
+    INFO_DURATION = TRANS_DURATION,
+    INFO_FINAL_Y = 4.0,
+    INFO_DELAY = 0,
+    LINK_FINAL_Y = 1.5,
+    LINK_DURATION = TRANS_DURATION,
+    LINK_DELAY = 0,
+    SWIVEL_SPEED = 30,
+    LIGHT_SPEED = 0.03;
 
 // initialize globals
-var camera, cameraControls, scene, renderer, fog;
-var panel_1, panel_2, panel_3, mirrorMesh, groundMirror, selectableObjects;
-var info_1, info_2, info_3;
-var link_1, link_2, link_3;
-var spotOne, spotTwo, spotThree, spotFour;
-var frame = 0;
-var mouseX = WIDTH / 2;
-var mouseY = HEIGHT / 2;
-var composer;
+var camera, cameraControls, scene, renderer, fog,
+    panel_1, panel_2, panel_3, mirrorMesh, groun,Mirror, selectableObjects,
+    info_1, info_2, info_3,
+    link_1, link_2, link_3,
+    spotOne, spotTwo, spotThree, spotFour,
+    frame = 0,
+    mouseX = WIDTH / 2,
+    mouseY = HEIGHT / 2,
+    composer;
 
 function init() {
 
@@ -89,7 +95,6 @@ function init() {
   // composer.addPass(renderPass);
   // composer.addPass(bloomPass);
   // composer.addPass(effectCopy);
-
 }
 
 function fillScene() {
@@ -148,7 +153,6 @@ function fillScene() {
 
 
   var linkGeo = new THREE.BoxGeometry(3, 3, 1, 1);
-
   link_1 = createMesh( linkGeo, 'site_link.jpg' );
   link_2 = createMesh( linkGeo, 'site_link.jpg' );
   link_3 = createMesh( linkGeo, 'site_link.jpg' );
@@ -156,7 +160,6 @@ function fillScene() {
   contact = createMesh( new THREE.PlaneBufferGeometry(5*1.6, 5, 1), 'contact.jpg' );
   contact.rotation.y = -Math.PI/2;
   contact.position.set(-59,-3,24);
-  scene.add(contact);
 
   link_1.material.emissive = new THREE.Color( 0x81648D );
   link_2.material.emissive = new THREE.Color( 0x81648D );
@@ -182,7 +185,7 @@ function fillScene() {
   scene.add(link_1);
   scene.add(link_2);
   scene.add(link_3);
-
+  scene.add(contact);
 
   about_panel = createMesh(panelGeo, 'profile_slide.jpg');
   about_panel.position.x = -50;
@@ -219,7 +222,6 @@ function fillScene() {
   aboutSpot3.position.y = 17;
   aboutSpot3.position.z = 60;
 
-
   // controls = new function() {
   //   this.position1 = 46;
   //   this.position2 = 40;
@@ -235,11 +237,6 @@ function fillScene() {
   // gui.add(controls, "position1", 10, 70).onChange(controls.updatePosition);
   // gui.add(controls, "position2", 10, 70).onChange(controls.updatePosition);
   // gui.add(controls, "position3", 10, 70).onChange(controls.updatePosition);
-  //
-  //
-
-
-
 
   // Lights
   mainLight = new THREE.PointLight(0xcccccc, 0.5, 300);
@@ -272,7 +269,6 @@ function fillScene() {
   spotFour.intensity = 3;
   spotFour.distance =120;
       // scene.add(spotFour);
-
 
   spotOne.target   = panel_1;
   spotTwo.target   = panel_2;
@@ -639,11 +635,13 @@ function render() {
 var step = 0.0;
 
 function update() {
-  if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
+  // debugging camera position
+  // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
 
   lightingControl();
   swivelControl();
 
+  // update packages
   TWEEN.update();
   // stats.update();
   delta = clock.getDelta();
@@ -679,4 +677,4 @@ fillScene();
 createAnimations();
 update();
 
-window.onresize = function(){ location.reload(); }
+window.onresize = function(){ location.reload() };
