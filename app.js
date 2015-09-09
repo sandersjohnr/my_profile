@@ -38,7 +38,7 @@ var WIDTH = window.innerWidth,
     LINK_FINAL_Y = 1.5,
     LINK_DURATION = TRANS_DURATION,
     LINK_DELAY = 0,
-    SWIVEL_SPEED = 30,
+    SWIVEL_SPEED = 15,
     LIGHT_SPEED = 0.03;
 
 // initialize globals
@@ -151,7 +151,6 @@ function fillScene() {
   info_3.position.z = 2 * SCENE_WIDTH / 3 + 6;
   info_3.rotation.y = - Math.PI / 2 - .7;
 
-
   var linkGeo = new THREE.BoxGeometry(3, 3, 1, 1);
   link_1 = createMesh( linkGeo, 'site_link.jpg' );
   link_2 = createMesh( linkGeo, 'site_link.jpg' );
@@ -204,19 +203,19 @@ function fillScene() {
   scene.add(about_panel);
 
   // lighting for about panel
-  aboutSpot1 = new THREE.SpotLight( 0xff0000, 3.0, 100 );
+  aboutSpot1 = new THREE.SpotLight( 0xff0000, 4.0, 100 );
   scene.add(aboutSpot1);
   aboutSpot1.position.x = -96;
   aboutSpot1.position.y = 10;
   aboutSpot1.position.z = 26;
 
-  aboutSpot2 = new THREE.SpotLight( 0x00ff00, 3.0, 100);
+  aboutSpot2 = new THREE.SpotLight( 0x00ff00, 4.0, 100);
   scene.add(aboutSpot2);
   aboutSpot2.position.x = -104;
   aboutSpot2.position.y = 5;
   aboutSpot2.position.z = 42;
 
-  aboutSpot3 = new THREE.SpotLight( 0x0000ff, 3.0, 100);
+  aboutSpot3 = new THREE.SpotLight( 0x0000ff, 4.0, 100);
   scene.add(aboutSpot3);
   aboutSpot3.position.x = -90;
   aboutSpot3.position.y = 17;
@@ -289,7 +288,7 @@ function fillScene() {
   var projector = new THREE.Projector();
   var mouseover = false;
   // init selectables for raycaster
-  selectableObjects = [ about_panel ];
+  selectableObjects = [ about_panel, panel_1, panel_2, panel_3 ];
 
   // when clicked, panel takes user to corresponding project page
   function mouseDown (event) {
@@ -308,7 +307,7 @@ function fillScene() {
       var selectedObj = intersects[0].object;
 
       if (selectedObj == panel_1) {
-
+        aboutSlideDown.start();
         resetInfoTwo.start();
         resetInfoThree.start();
         resetLinkTwo.start();
@@ -318,12 +317,10 @@ function fillScene() {
         showInfoOne.start()
         showLinkOne.start();
         selectableObjects = [ info_1, link_1, panel_1, panel_2, panel_3 ];
-        spotOne.target = panel_1;
-        spotTwo.target = panel_1;
-        spotThree.target = panel_1;
+        targetSpot(panel_1);
 
       } else if (selectedObj == panel_2) {
-
+        aboutSlideDown.start();
         resetInfoOne.start()
         resetInfoThree.start();
         resetLinkOne.start();
@@ -333,12 +330,10 @@ function fillScene() {
         camToCenterPos.start();
         camToCenterRot.start();
         selectableObjects = [ panel_1, panel_2, panel_3, info_2, link_2 ];
-        spotOne.target = panel_2;
-        spotTwo.target = panel_2;
-        spotThree.target = panel_2;
+        targetSpot(panel_2);
 
       } else if (selectedObj == panel_3) {
-
+        aboutSlideDown.start();
         resetInfoOne.start();
         resetInfoTwo.start();
         resetLinkOne.start();
@@ -348,9 +343,7 @@ function fillScene() {
         showInfoThree.start();
         showLinkThree.start();
         selectableObjects = [ panel_1, panel_2, panel_3, info_3, link_3 ];
-        spotOne.target = panel_3;
-        spotTwo.target = panel_3;
-        spotThree.target = panel_3;
+        targetSpot(panel_3);
 
       } else if (selectedObj == about_panel) {
         navigation.goProjects();
@@ -361,28 +354,25 @@ function fillScene() {
         resetLinkTwo.start();
         resetLinkThree.start();
         navigation.goHome();
-        selectableObjects = [ about_panel, contact ];
+        selectableObjects = [ about_panel, contact, panel_1, panel_2, panel_3 ];
         splitSpots();
 
       }
       else if (selectedObj == link_1) {
         document.getElementById('featur').click();
-
       }
       else if (selectedObj == link_2) {
         document.getElementById('hoodz').click();
-
       }
       else if (selectedObj == link_3) {
         document.getElementById('stretchme').click();
-
       }
       else if (selectedObj == contact) {
         document.getElementById('contact').click();
-
       }
     } else {
-        // fill in if event occurs when clicking on nothing
+        //  when clicking on nothing
+        navigation.goHome();
     }
   };
 
@@ -395,7 +385,7 @@ function fillScene() {
       camToAboutRot.start();
       camToAboutPos.start();
       aboutSlideUp.delay(800).start();
-      selectableObjects = [ about_panel ];
+      selectableObjects = [ about_panel, panel_1, panel_2, panel_3  ];
     };
     this.goProjects = function() {
       aboutSlideDown.start();
@@ -428,42 +418,39 @@ function fillScene() {
     if (intersects.length > 0) {
       $body.css('cursor', 'pointer');
       var selectedObj = intersects[0].object;
-
       // if not already mouse-ing over, then now we are
       if (!mouseover) {
         mouseover = true;
-
         // focus lighting on hovered-over panel
         if (selectedObj == panel_1) {
-          mainLight.target =
-          spotOne.target =
-          spotTwo.target =
-          spotThree.target = panel_1;
-
+          targetSpot(panel_1);
         } else if (selectedObj == panel_2) {
-          mainLight.target =
-          spotOne.target =
-          spotTwo.target =
-          spotThree.target = panel_2;
-
+          targetSpot(panel_2);
         } else if (selectedObj == panel_3) {
-          mainLight.target =
-          spotOne.target =
-          spotTwo.target =
-          spotThree.target = panel_3;
-
+          targetSpot(panel_3);
+        } else if (selectedObj == about_panel) {
+          splitSpots();
+          mouseover = false;
         }
       }
     } else {
       mouseover = false;
       $body.css('cursor', 'default');
+      // splitSpots();
     }
+
   };
 
   function splitSpots() {
     spotOne.target = panel_1;
     spotTwo.target = panel_2;
     spotThree.target = panel_3;
+  }
+  function targetSpot(spotTarget) {
+    mainLight.target =
+    spotOne.target =
+    spotTwo.target =
+    spotThree.target = spotTarget;
   }
 
 }
@@ -579,7 +566,6 @@ function createAnimations() {
   resetContact = new TWEEN.Tween(contact.position)
     .to({ y: -3 }, LINK_DURATION * 0.5).easing(cubicInOut);
 
-
   resetLinkOne = new TWEEN.Tween(link_1.position)
     .to({ y: -3 }, INFO_DURATION * 0.5).easing(cubicInOut)
 
@@ -623,10 +609,8 @@ function initStats() {
 function render() {
   // helper module to rerender on window resize
   // THREEx.WindowResize(renderer, camera);
-
   // render the mirror
   groundMirror.render();
-
   // render scene
   renderer.render(scene, camera);
   // composer.render(delta)
@@ -637,10 +621,8 @@ var step = 0.0;
 function update() {
   // debugging camera position
   // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
-
   lightingControl();
   swivelControl();
-
   // update packages
   TWEEN.update();
   // stats.update();
@@ -654,7 +636,7 @@ function update() {
 
 function swivelControl() {
   camera.position.z += ( mouseX - camera.position.z ) * .000001 * SWIVEL_SPEED;
-  camera.position.y += ( -  mouseY - camera.position.y ) * .000001 * SWIVEL_SPEED;
+  camera.position.y += ( - mouseY - camera.position.y ) * .000001 * SWIVEL_SPEED;
 }
 
 function lightingControl() {
