@@ -38,7 +38,7 @@ var WIDTH = window.innerWidth,
     LINK_FINAL_Y = 1.5,
     LINK_DURATION = TRANS_DURATION,
     LINK_DELAY = 0,
-    SWIVEL_SPEED = 15,
+    SWIVEL_SPEED = 10,
     LIGHT_SPEED = 0.03;
 
 // initialize globals
