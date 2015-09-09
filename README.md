@@ -1,3 +1,3 @@
 # sandersjohnr.github.io
 
-# Welcome to my profile site!
+# welcome to my profile site!
