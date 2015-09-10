@@ -443,7 +443,7 @@ function fillScene() {
     } else {
       mouseover = false;
       $body.css('cursor', 'default');
-      splitSpots();
+      // splitSpots();
     }
 
   }
