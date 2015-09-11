@@ -47,6 +47,7 @@ var camera, cameraControls, scene, renderer, fog,
     info_1, info_2, info_3,
     link_1, link_2, link_3,
     spotOne, spotTwo, spotThree, spotFour,
+    lightSpeed = LIGHT_SPEED,
     frame = 0,
     mouseX = WIDTH / 2,
     mouseY = HEIGHT / 2,
@@ -446,6 +447,12 @@ function fillScene() {
     };
     this.goProjects = function() {
       aboutSlideDown.start();
+      resetInfoOne.start();
+      resetInfoTwo.start();
+      resetInfoThree.start();
+      resetLinkOne.start();
+      resetLinkTwo.start();
+      resetLinkThree.start();
       resetContact.start();
       camToAllPanelsPos.delay(0).start();
       camToAllPanelsRot.delay(0).start();
@@ -477,7 +484,7 @@ function fillScene() {
       $body.css('cursor', 'pointer');
       var selectedObj = intersects[0].object;
 
-      if (selectedObj != about_panel) { LIGHT_SPEED = 0.02;}
+      if (selectedObj != about_panel) { lightSpeed = LIGHT_SPEED;}
 
       // focus lighting on hovered-over panel
       if (selectedObj == panel_1) {
@@ -488,12 +495,12 @@ function fillScene() {
         targetSpot(panel_3);
       } else if (selectedObj == about_panel) {
         splitSpots();
-        LIGHT_SPEED = 0.04;
+        lightSpeed = 2 * LIGHT_SPEED;
       }
 
     } else {
       $body.css('cursor', 'default');
-      LIGHT_SPEED = 0.02;
+      lightSpeed = LIGHT_SPEED;
     }
 
   }
@@ -684,8 +691,6 @@ function render() {
   // composer.render(delta)
 }
 
-
-
 function update() {
   // debugging camera position
   // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
@@ -709,7 +714,7 @@ function swivelControl() {
 
 var step = 0.0;
 function lightingControl() {
-  step += LIGHT_SPEED;
+  step += lightSpeed;
 
   aboutSpot1.position.z = 30 + Math.sin(step) * 30;
   aboutSpot2.position.z = 30 + Math.sin(step * 0.8 + 2 * Math.PI / 3) * 30;
@@ -722,7 +727,6 @@ function lightingControl() {
   aboutSpot2.target = about_panel;
   aboutSpot3.target = about_panel;
 }
-
 
 init();
 fillScene();
