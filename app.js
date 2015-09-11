@@ -207,9 +207,9 @@ function fillScene() {
   link_3.material.emissive = new THREE.Color( 0x81648D );
   contact.material.emissive = new THREE.Color(0xeca032 );
 
-  link_1.rotation.y = Math.PI / - 2 + 0.7;
-  link_2.rotation.y = Math.PI / - 2 + 0.20;
-  link_3.rotation.y = Math.PI / - 2 - 0.7;
+  link_1.rotation.y = Math.PI / - 2 + 0.37;
+  link_2.rotation.y = Math.PI / - 2 ;
+  link_3.rotation.y = Math.PI / - 2 - 0.37;
 
   link_1.position.x = 40;
   link_2.position.x = 39.5;
