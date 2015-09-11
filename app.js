@@ -38,7 +38,7 @@ var WIDTH = window.innerWidth,
     LINK_FINAL_Y = 1.5,
     LINK_DURATION = TRANS_DURATION,
     LINK_DELAY = 0,
-    SWIVEL_SPEED = 10,
+    SWIVEL_SPEED = 7,
     LIGHT_SPEED = 0.03;
 
 // initialize globals
@@ -68,6 +68,50 @@ function init() {
 
   // camera
   camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+
+  // GUI
+  // camera.position.z = 100;
+  var button_w = 2;
+  var button_h = 0.8;
+  var textSize = 0.4;
+  var textDist = -30;
+  var textOffset = -1;
+  var textX = ASPECT * 3;
+  var textY = 7;
+  var xScale = 1.2;
+  var boxOffsetY = 0.18;
+  var boxOffsetX = 1.3;
+
+  guiButton_1 = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(button_w, button_h, 1),
+    new THREE.MeshBasicMaterial({ color: 0x220000 } ));
+
+  guiButton_2 = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(button_w * 1.25, button_h, 1),
+    new THREE.MeshBasicMaterial({ color: 0x220000  } ));
+
+  guiButton_3 = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(button_w * 1.25, button_h, 1),
+    new THREE.MeshBasicMaterial({ color: 0x220000 } ));
+
+  guiButton_1.position.set( -textX * boxOffsetX, textY + boxOffsetY, textDist-0.1);
+  guiButton_2.position.set( 0-0.2, textY + boxOffsetY, textDist-0.1);
+  guiButton_3.position.set( textX * boxOffsetX - 0.7, textY + boxOffsetY, textDist-0.1);
+  camera.add(guiButton_1);
+  camera.add(guiButton_2);
+  camera.add(guiButton_3);
+
+  guiText_1 = createText('home', textSize, 0, 0xddaaaa);
+  guiText_2 = createText('projects', textSize, 0, 0xddaaaa);
+  guiText_3 = createText('contact', textSize, 0, 0xddaaaa);
+  guiText_1.position.set( (-textX + textOffset) * xScale, textY, textDist);
+  guiText_2.position.set( (0 + textOffset) * xScale , textY, textDist);
+  guiText_3.position.set( (textX + textOffset) * xScale, textY, textDist);
+  camera.add(guiText_1);
+  camera.add(guiText_2);
+  camera.add(guiText_3);
+
+  scene.add(camera);
 
   // controls
   cameraControls = new THREE.FlyControls(camera);
@@ -294,7 +338,10 @@ function fillScene() {
   var projector = new THREE.Projector();
   var mouseover = false;
   // init selectables for raycaster
-  selectableObjects = [ about_panel, panel_1, panel_2, panel_3 ];
+  selectableObjects = [
+    about_panel, panel_1, panel_2, panel_3,
+    guiButton_1, guiButton_2, guiButton_3, guiText_1, guiText_2, guiText_3
+  ];
 
   // when clicked, panel takes user to corresponding project page
   function mouseDown (event) {
@@ -322,7 +369,8 @@ function fillScene() {
         camRotToPanelOne.start();
         showInfoOne.start();
         showLinkOne.start();
-        selectableObjects = [ info_1, link_1, panel_1, panel_2, panel_3 ];
+        selectableObjects = [ info_1, link_1, panel_1, panel_2, panel_3,
+          guiButton_1, guiButton_2, guiButton_3, guiText_1, guiText_2, guiText_3 ];
         targetSpot(panel_1);
 
       } else if (selectedObj == panel_2) {
@@ -335,7 +383,8 @@ function fillScene() {
         showLinkTwo.start();
         camToCenterPos.start();
         camToCenterRot.start();
-        selectableObjects = [ panel_1, panel_2, panel_3, info_2, link_2 ];
+        selectableObjects = [ panel_1, panel_2, panel_3, info_2, link_2,
+          guiButton_1, guiButton_2, guiButton_3, guiText_1, guiText_2, guiText_3 ];
         targetSpot(panel_2);
 
       } else if (selectedObj == panel_3) {
@@ -348,7 +397,8 @@ function fillScene() {
         camRotToPanelThree.start();
         showInfoThree.start();
         showLinkThree.start();
-        selectableObjects = [ panel_1, panel_2, panel_3, info_3, link_3 ];
+        selectableObjects = [ panel_1, panel_2, panel_3, info_3, link_3,
+          guiButton_1, guiButton_2, guiButton_3, guiText_1, guiText_2, guiText_3 ];
         targetSpot(panel_3);
 
       } else if (selectedObj == about_panel) {
@@ -356,26 +406,32 @@ function fillScene() {
 
       } else if (selectedObj == info_1 || selectedObj == info_2|| selectedObj == info_3) {
         navigation.goHome();
-        selectableObjects = [ about_panel, contact, panel_1, panel_2, panel_3 ];
+        selectableObjects = [ about_panel, contact, panel_1, panel_2, panel_3,
+          guiButton_1, guiButton_2, guiButton_3, guiText_1, guiText_2, guiText_3 ];
 
-      }
-      else if (selectedObj == link_1) {
+      } else if (selectedObj == guiButton_2 || selectedObj == guiText_2) {
+        navigation.goProjects();
+
+      } else if (selectedObj == guiButton_3 || selectedObj == guiText_3) {
+        document.getElementById('contact').click();
+
+      } else if (selectedObj == link_1) {
         document.getElementById('featur').click();
-      }
-      else if (selectedObj == link_2) {
+
+      } else if (selectedObj == link_2) {
         document.getElementById('hoodz').click();
-      }
-      else if (selectedObj == link_3) {
+
+      } else if (selectedObj == link_3) {
         document.getElementById('stretchme').click();
-      }
-      else if (selectedObj == contact) {
+
+      } else if (selectedObj == contact) {
         document.getElementById('contact').click();
       }
     } else {
         //  when clicking on nothing
       navigation.goHome();
-      selectableObjects = [ about_panel, contact, panel_1, panel_2, panel_3 ];
-
+      selectableObjects = [ about_panel, contact, panel_1, panel_2, panel_3,
+        guiButton_1, guiButton_2, guiButton_3, guiText_1, guiText_2, guiText_3 ];
     }
   }
 
@@ -399,7 +455,8 @@ function fillScene() {
       resetContact.start();
       camToAllPanelsPos.delay(0).start();
       camToAllPanelsRot.delay(0).start();
-      selectableObjects = [ panel_1, panel_2, panel_3 ];
+      selectableObjects = [ panel_1, panel_2, panel_3, guiButton_1, guiButton_2,
+        guiButton_3, guiText_1, guiText_2, guiText_3 ];
     };
 
     return this;
@@ -425,25 +482,24 @@ function fillScene() {
     if (intersects.length > 0) {
       $body.css('cursor', 'pointer');
       var selectedObj = intersects[0].object;
-      // if not already mouse-ing over, then now we are
-      if (!mouseover) {
-        mouseover = true;
-        // focus lighting on hovered-over panel
-        if (selectedObj == panel_1) {
-          targetSpot(panel_1);
-        } else if (selectedObj == panel_2) {
-          targetSpot(panel_2);
-        } else if (selectedObj == panel_3) {
-          targetSpot(panel_3);
-        } else if (selectedObj == about_panel) {
-          splitSpots();
-          mouseover = false;
-        }
+
+      // focus lighting on hovered-over panel
+      if (selectedObj == panel_1) {
+        targetSpot(panel_1);
+      } else if (selectedObj == panel_2) {
+        targetSpot(panel_2);
+      } else if (selectedObj == panel_3) {
+        targetSpot(panel_3);
+      } else if (selectedObj == about_panel) {
+        splitSpots();
       }
+
+      else if (selectedObj == guiButton_1) {
+
+      }
+
     } else {
-      mouseover = false;
       $body.css('cursor', 'default');
-      // splitSpots();
     }
 
   }
@@ -645,6 +701,31 @@ function lightingControl() {
   aboutSpot1.target = about_panel;
   aboutSpot2.target = about_panel;
   aboutSpot3.target = about_panel;
+}
+
+function createText(textString, size, height, color) {
+  var options = { size: size
+                , height: height
+                , font: 'helvetiker'
+                , weight: 'normal'
+                , style: 'normal'
+                , bevelEnabled: false
+                // , bevelThickness: 0.5
+                // , bevelSize: 1
+                // , bevelSegments: 5
+                // , curveSegments: 5
+                , steps: 1
+                };
+  var geom = new THREE.TextGeometry(textString, options);
+  var meshMat = new THREE.MeshPhongMaterial({
+    emissive: color
+    // metal: true,
+    // specular: 0xffffff,
+    // shininess: 100
+  });
+  // meshMat.side = THREE.DoubleSide;
+  // var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMat]);
+  return new THREE.Mesh(geom, meshMat);
 }
 
 init();
