@@ -35,7 +35,7 @@ var WIDTH = window.innerWidth,
     INFO_DURATION = TRANS_DURATION,
     INFO_FINAL_Y = 4.0,
     INFO_DELAY = 0,
-    LINK_FINAL_Y = 1.5,
+    LINK_FINAL_Y = 1.75,
     LINK_DURATION = TRANS_DURATION,
     LINK_DELAY = 0,
     SWIVEL_SPEED = 7,
@@ -193,7 +193,7 @@ function fillScene() {
   info_3.position.z = 2 * SCENE_WIDTH / 3 + 6;
   info_3.rotation.y = - Math.PI / 2 - 0.7;
 
-  var linkGeo = new THREE.BoxGeometry(3, 3, 0.1, 1);
+  var linkGeo = new THREE.BoxGeometry(3.5, 3.5, 0.1, 1);
   link_1 = createMesh( linkGeo, 'site_link.jpg' );
   link_2 = createMesh( linkGeo, 'site_link.jpg' );
   link_3 = createMesh( linkGeo, 'site_link.jpg' );
