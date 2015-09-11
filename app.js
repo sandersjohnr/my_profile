@@ -399,7 +399,8 @@ function fillScene() {
       } else if (selectedObj == about_panel) {
         navigation.goProjects();
 
-      } else if (selectedObj == info_1 || selectedObj == info_2|| selectedObj == info_3) {
+      } else if (selectedObj == info_1 || selectedObj == info_2|| selectedObj == info_3 ||
+        selectedObj == guiButton_1 || selectedObj == guiText_1) {
         navigation.goHome();
         selectableObjects = [ about_panel, contact, panel_1, panel_2, panel_3,
           guiButton_1, guiButton_2, guiButton_3, guiText_1, guiText_2, guiText_3 ];
@@ -488,7 +489,6 @@ function fillScene() {
       } else if (selectedObj == about_panel) {
         splitSpots();
       }
-
 
     } else {
       $body.css('cursor', 'default');
