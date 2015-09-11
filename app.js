@@ -16,7 +16,7 @@ var WIDTH = window.innerWidth,
     VIEW_ANGLE = 30,
     ASPECT = WIDTH / HEIGHT,
     NEAR = 1,
-    FAR = 500,
+    FAR = 700,
     FOG_NEAR = 70,
     FOG_FAR = 200,
     CAMERA_DISTANCE = 60,
@@ -70,7 +70,6 @@ function init() {
   camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 
   // GUI
-  // camera.position.z = 100;
   var button_w = 2;
   var button_h = 0.8;
   var textSize = 0.4;
@@ -318,19 +317,15 @@ function fillScene() {
   spotThree.target = panel_3;
   spotFour.target  = about_panel;
 
-  camera.position.set(-300, 200, 30);
+  // set initial camera position for intro swoop
+  camera.position.set(-1000, 50, 30);
   camera.lookAt( about_panel.position );
 
   // scene.fog = new THREE.Fog( 0x290000, FOG_NEAR, FOG_FAR);
 
   /* INTERACTION CONTROLS --------------------------------------- */
   navigation = new Navigation();
-  // document.getElementById('home').addEventListener('click', function() {
-  //   navigation.goHome();
-  // });
-  // document.getElementById('projects').addEventListener('click', function() {
-  //   navigation.goProjects();
-  // });
+
 
   document.addEventListener('mousedown', mouseDown , false);
   document.addEventListener('mousemove', mouseMove, false);
@@ -494,9 +489,6 @@ function fillScene() {
         splitSpots();
       }
 
-      else if (selectedObj == guiButton_1) {
-
-      }
 
     } else {
       $body.css('cursor', 'default');
