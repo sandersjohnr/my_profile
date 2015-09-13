@@ -1,8 +1,7 @@
 /*
  *    MY PROFILE SITE in THREE.js
- *    @author = enoblue
  */
-// window.onload = (function() {
+window.onload = (function() {
 // initialize stats module
 // var stats = initStats();
 var clock = new THREE.Clock();
@@ -206,7 +205,7 @@ function fillScene() {
   link_1.material.emissive = new THREE.Color( 0x81648D );
   link_2.material.emissive = new THREE.Color( 0x81648D );
   link_3.material.emissive = new THREE.Color( 0x81648D );
-  contact.material.emissive = new THREE.Color( 0xeca032 );
+  // contact.material.emissive = new THREE.Color( 0xeca032 );
 
   link_1.rotation.y = Math.PI / - 2 + 0.37;
   link_2.rotation.y = Math.PI / - 2 ;
@@ -225,7 +224,7 @@ function fillScene() {
   link_3.position.y = -2;
 
   // main about panel
-  about_panel = createMesh(panelGeo, 'profile_slide.jpg');
+  about_panel = createMesh(panelGeo, 'about_slide_half.jpg');
   about_panel.position.x = -50;
   about_panel.position.y = 10;
   about_panel.position.z = SCENE_WIDTH / 3;
@@ -242,8 +241,10 @@ function fillScene() {
   scene.add(link_1);
   scene.add(link_2);
   scene.add(link_3);
-  scene.add(contact);
+  // scene.add(contact);
   scene.add(about_panel);
+
+  // Lights
 
   // lighting for about panel
   aboutSpot1 = new THREE.SpotLight( 0xff0000, 4.0, 100 );
@@ -280,7 +281,6 @@ function fillScene() {
   // gui.add(controls, "position2", 10, 70).onChange(controls.updatePosition);
   // gui.add(controls, "position3", 10, 70).onChange(controls.updatePosition);
 
-  // Lights
   mainLight = new THREE.PointLight(0xcccccc, 0.5, 300);
   mainLight.position.set(0, 20, 20);
   scene.add( mainLight );
@@ -325,39 +325,40 @@ function fillScene() {
 
   // Pop up text for skills
   var skillNum = 7;
-  var skillSize = 2;
+  var skillSize = 1.75;
+  var skillHeight = 0.5;
   var skillY = 0.6;
   var skillZ = SCENE_WIDTH/(2*skillNum);
   var skillColor = 0xeeeeee;
 
-  skill_1 = createText('three.js', skillSize, 1, skillColor);
-  skill_1.position.set(-65, skillY, skillZ*1);
+  skill_1 = createText('three.js', skillSize, skillHeight, skillColor);
+  skill_1.position.set(-63, skillY, skillZ*1);
   skill_1.rotation.y = -Math.PI/2;
-  scene.add( skill_1 );
-  skill_2 = createText('javascript', skillSize, 1, skillColor);
-  skill_2.position.set(-73, skillY, skillZ * 2);
+  skill_2 = createText('javascript', skillSize, skillHeight, skillColor);
+  skill_2.position.set(-71, skillY, skillZ * 2);
   skill_2.rotation.y = -Math.PI/2;
-  scene.add( skill_2 );
-  skill_3 = createText('jQuery', skillSize, 1, skillColor);
-  skill_3.position.set(-60, skillY, skillZ * 3 - 3);
+  skill_3 = createText('jQuery', skillSize, skillHeight, skillColor);
+  skill_3.position.set(-57, skillY, skillZ * 3 - 3);
   skill_3.rotation.y = -Math.PI/2;
-  scene.add( skill_3 );
-  skill_4 = createText('d3.js', skillSize, 1, skillColor);
-  skill_4.position.set(-66, skillY, skillZ * 4);
+  skill_4 = createText('d3.js', skillSize, skillHeight, skillColor);
+  skill_4.position.set(-63, skillY, skillZ * 4);
   skill_4.rotation.y = -Math.PI/2;
-  scene.add( skill_4 );
-  skill_5 = createText('express', skillSize, 1, skillColor);
-  skill_5.position.set(-61, skillY, skillZ * 5);
+  skill_5 = createText('express', skillSize, skillHeight, skillColor);
+  skill_5.position.set(-58, skillY, skillZ * 5);
   skill_5.rotation.y = -Math.PI/2;
-  scene.add( skill_5 );
-  skill_6 = createText('angularJS', skillSize, 1, skillColor);
-  skill_6.position.set(-72, skillY, skillZ * 6 - 5);
+  skill_6 = createText('angularJS', skillSize, skillHeight, skillColor);
+  skill_6.position.set(-69, skillY, skillZ * 6 - 5);
   skill_6.rotation.y = -Math.PI/2;
-  scene.add( skill_6 );
-  skill_7 = createText('node', skillSize, 1, skillColor);
-  skill_7.position.set(-62, skillY, skillZ * 7);
+  skill_7 = createText('node', skillSize, skillHeight, skillColor);
+  skill_7.position.set(-59, skillY, skillZ * 7);
   skill_7.rotation.y = -Math.PI/2;
-  scene.add( skill_7 );
+  // scene.add( skill_1 );
+  // scene.add( skill_2 );
+  // scene.add( skill_3 );
+  // scene.add( skill_4 );
+  // scene.add( skill_5 );
+  // scene.add( skill_6 );
+  // scene.add( skill_7 );
 
 
   /* INTERACTION CONTROLS --------------------------------------- */
@@ -795,6 +796,6 @@ fillScene();
 createAnimations();
 update();
 
-// }); // end ONLOAD fn
+}); // end ONLOAD fn
 
 window.onresize = function(){ location.reload(); };
