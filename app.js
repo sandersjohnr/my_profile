@@ -1,8 +1,7 @@
 /*
  *    MY PROFILE SITE in THREE.js
- *    @author = enoblue
  */
-// window.onload = (function() {
+window.onload = (function() {
 // initialize stats module
 // var stats = initStats();
 var clock = new THREE.Clock();
@@ -35,7 +34,7 @@ var WIDTH = window.innerWidth,
     INFO_DURATION = TRANS_DURATION,
     INFO_FINAL_Y = 4.0,
     INFO_DELAY = 0,
-    LINK_FINAL_Y = 1.5,
+    LINK_FINAL_Y = 1.75,
     LINK_DURATION = TRANS_DURATION,
     LINK_DELAY = 0,
     SWIVEL_SPEED = 7,
@@ -47,6 +46,7 @@ var camera, cameraControls, scene, renderer, fog,
     info_1, info_2, info_3,
     link_1, link_2, link_3,
     spotOne, spotTwo, spotThree, spotFour,
+    lightSpeed = LIGHT_SPEED,
     frame = 0,
     mouseX = WIDTH / 2,
     mouseY = HEIGHT / 2,
@@ -98,12 +98,13 @@ function init() {
   camera.add(guiButton_2);
   camera.add(guiButton_3);
 
-  guiText_1 = createText('home', textSize, 0, 0xddaaaa);
-  guiText_2 = createText('projects', textSize, 0, 0xddaaaa);
-  guiText_3 = createText('contact', textSize, 0, 0xddaaaa);
+  guiText_1 = createTextEmissive('home', textSize, 0, 0xddaaaa);
+  guiText_2 = createTextEmissive('projects', textSize, 0, 0xddaaaa);
+  guiText_3 = createTextEmissive('contact', textSize, 0, 0xddaaaa);
   guiText_1.position.set( (-textX + textOffset) * xScale, textY, textDist);
   guiText_2.position.set( (0 + textOffset) * xScale , textY, textDist);
   guiText_3.position.set( (textX + textOffset) * xScale, textY, textDist);
+
   camera.add(guiText_1);
   camera.add(guiText_2);
   camera.add(guiText_3);
@@ -151,7 +152,6 @@ function fillScene() {
   mirrorMesh.add(groundMirror);
   mirrorMesh.rotateX( -Math.PI/2 );
   mirrorMesh.position.set(0, 0, 50);
-  scene.add(mirrorMesh);
 
   // panels
   var panelGeo = new THREE.BoxGeometry(18 * 1.6, 18, 1, 1);
@@ -192,23 +192,24 @@ function fillScene() {
   info_3.position.z = 2 * SCENE_WIDTH / 3 + 6;
   info_3.rotation.y = - Math.PI / 2 - 0.7;
 
-  var linkGeo = new THREE.BoxGeometry(3, 3, 0.1, 1);
-  link_1 = createMesh( linkGeo, 'site_link.jpg' );
-  link_2 = createMesh( linkGeo, 'site_link.jpg' );
-  link_3 = createMesh( linkGeo, 'site_link.jpg' );
-
+  // contact
   contact = createMesh( new THREE.PlaneBufferGeometry(5*1.6, 5, 1), 'contact.jpg' );
   contact.rotation.y = -Math.PI/2;
   contact.position.set(-59,-3,24);
 
+  // links
+  var linkGeo = new THREE.BoxGeometry(3.5, 3.5, 0.1, 1);
+  link_1 = createMesh( linkGeo, 'site_link.jpg' );
+  link_2 = createMesh( linkGeo, 'site_link.jpg' );
+  link_3 = createMesh( linkGeo, 'site_link.jpg' );
   link_1.material.emissive = new THREE.Color( 0x81648D );
   link_2.material.emissive = new THREE.Color( 0x81648D );
   link_3.material.emissive = new THREE.Color( 0x81648D );
-  contact.material.emissive = new THREE.Color(0xeca032 );
+  // contact.material.emissive = new THREE.Color( 0xeca032 );
 
-  link_1.rotation.y = Math.PI / - 2 + 0.7;
-  link_2.rotation.y = Math.PI / - 2 + 0.20;
-  link_3.rotation.y = Math.PI / - 2 - 0.7;
+  link_1.rotation.y = Math.PI / - 2 + 0.37;
+  link_2.rotation.y = Math.PI / - 2 ;
+  link_3.rotation.y = Math.PI / - 2 - 0.37;
 
   link_1.position.x = 40;
   link_2.position.x = 39.5;
@@ -222,26 +223,28 @@ function fillScene() {
   link_2.position.y = -2;
   link_3.position.y = -2;
 
-  scene.add(link_1);
-  scene.add(link_2);
-  scene.add(link_3);
-  scene.add(contact);
-
-  about_panel = createMesh(panelGeo, 'profile_slide.jpg');
+  // main about panel
+  about_panel = createMesh(panelGeo, 'about_slide_half.jpg');
   about_panel.position.x = -50;
-  about_panel.position.y = 9.7;
+  about_panel.position.y = 10;
   about_panel.position.z = SCENE_WIDTH / 3;
   about_panel.rotation.y = - Math.PI / 2;
 
+  // add everything to the scene
+  scene.add(mirrorMesh);
   scene.add(panel_1);
   scene.add(panel_2);
   scene.add(panel_3);
-
   scene.add(info_1);
   scene.add(info_2);
   scene.add(info_3);
-
+  scene.add(link_1);
+  scene.add(link_2);
+  scene.add(link_3);
+  // scene.add(contact);
   scene.add(about_panel);
+
+  // Lights
 
   // lighting for about panel
   aboutSpot1 = new THREE.SpotLight( 0xff0000, 4.0, 100 );
@@ -278,7 +281,6 @@ function fillScene() {
   // gui.add(controls, "position2", 10, 70).onChange(controls.updatePosition);
   // gui.add(controls, "position3", 10, 70).onChange(controls.updatePosition);
 
-  // Lights
   mainLight = new THREE.PointLight(0xcccccc, 0.5, 300);
   mainLight.position.set(0, 20, 20);
   scene.add( mainLight );
@@ -321,9 +323,46 @@ function fillScene() {
 
   // scene.fog = new THREE.Fog( 0x290000, FOG_NEAR, FOG_FAR);
 
+  // Pop up text for skills
+  var skillNum = 7;
+  var skillSize = 1.75;
+  var skillHeight = 0.5;
+  var skillY = 0.6;
+  var skillZ = SCENE_WIDTH/(2*skillNum);
+  var skillColor = 0xeeeeee;
+
+  skill_1 = createText('three.js', skillSize, skillHeight, skillColor);
+  skill_1.position.set(-63, skillY, skillZ*1);
+  skill_1.rotation.y = -Math.PI/2;
+  skill_2 = createText('javascript', skillSize, skillHeight, skillColor);
+  skill_2.position.set(-71, skillY, skillZ * 2);
+  skill_2.rotation.y = -Math.PI/2;
+  skill_3 = createText('jQuery', skillSize, skillHeight, skillColor);
+  skill_3.position.set(-57, skillY, skillZ * 3 - 3);
+  skill_3.rotation.y = -Math.PI/2;
+  skill_4 = createText('d3.js', skillSize, skillHeight, skillColor);
+  skill_4.position.set(-63, skillY, skillZ * 4);
+  skill_4.rotation.y = -Math.PI/2;
+  skill_5 = createText('express', skillSize, skillHeight, skillColor);
+  skill_5.position.set(-58, skillY, skillZ * 5);
+  skill_5.rotation.y = -Math.PI/2;
+  skill_6 = createText('angularJS', skillSize, skillHeight, skillColor);
+  skill_6.position.set(-69, skillY, skillZ * 6 - 5);
+  skill_6.rotation.y = -Math.PI/2;
+  skill_7 = createText('node', skillSize, skillHeight, skillColor);
+  skill_7.position.set(-59, skillY, skillZ * 7);
+  skill_7.rotation.y = -Math.PI/2;
+  // scene.add( skill_1 );
+  // scene.add( skill_2 );
+  // scene.add( skill_3 );
+  // scene.add( skill_4 );
+  // scene.add( skill_5 );
+  // scene.add( skill_6 );
+  // scene.add( skill_7 );
+
+
   /* INTERACTION CONTROLS --------------------------------------- */
   navigation = new Navigation();
-
 
   document.addEventListener('mousedown', mouseDown , false);
   document.addEventListener('mousemove', mouseMove, false);
@@ -446,6 +485,12 @@ function fillScene() {
     };
     this.goProjects = function() {
       aboutSlideDown.start();
+      resetInfoOne.start();
+      resetInfoTwo.start();
+      resetInfoThree.start();
+      resetLinkOne.start();
+      resetLinkTwo.start();
+      resetLinkThree.start();
       resetContact.start();
       camToAllPanelsPos.delay(0).start();
       camToAllPanelsRot.delay(0).start();
@@ -477,7 +522,7 @@ function fillScene() {
       $body.css('cursor', 'pointer');
       var selectedObj = intersects[0].object;
 
-      if (selectedObj != about_panel) { LIGHT_SPEED = 0.02;}
+      if (selectedObj != about_panel) { lightSpeed = LIGHT_SPEED;}
 
       // focus lighting on hovered-over panel
       if (selectedObj == panel_1) {
@@ -488,12 +533,12 @@ function fillScene() {
         targetSpot(panel_3);
       } else if (selectedObj == about_panel) {
         splitSpots();
-        LIGHT_SPEED = 0.04;
+        lightSpeed = 2 * LIGHT_SPEED;
       }
 
     } else {
       $body.css('cursor', 'default');
-      LIGHT_SPEED = 0.02;
+      lightSpeed = LIGHT_SPEED;
     }
 
   }
@@ -514,6 +559,31 @@ function fillScene() {
 }
 
 function createText(textString, size, height, color) {
+  var options = { size: size,
+                  height: height,
+                  font: 'helvetiker',
+                  weight: 'normal',
+                  style: 'normal',
+                  bevelEnabled: false,
+                  // , bevelThickness: 0.5
+                  // , bevelSize: 1
+                  // , bevelSegments: 5
+                  // , curveSegments: 5
+                  steps: 1
+                };
+  var geom = new THREE.TextGeometry(textString, options);
+  var meshMat = new THREE.MeshPhongMaterial({
+    color: color
+    // metal: true,
+    // specular: 0xffffff,
+    // shininess: 100
+  });
+  // meshMat.side = THREE.DoubleSide;
+  // var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMat]);
+  return new THREE.Mesh(geom, meshMat);
+}
+
+function createTextEmissive(textString, size, height, color) {
   var options = { size: size,
                   height: height,
                   font: 'helvetiker',
@@ -684,8 +754,6 @@ function render() {
   // composer.render(delta)
 }
 
-
-
 function update() {
   // debugging camera position
   // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
@@ -709,7 +777,7 @@ function swivelControl() {
 
 var step = 0.0;
 function lightingControl() {
-  step += LIGHT_SPEED;
+  step += lightSpeed;
 
   aboutSpot1.position.z = 30 + Math.sin(step) * 30;
   aboutSpot2.position.z = 30 + Math.sin(step * 0.8 + 2 * Math.PI / 3) * 30;
@@ -723,12 +791,11 @@ function lightingControl() {
   aboutSpot3.target = about_panel;
 }
 
-
 init();
 fillScene();
 createAnimations();
 update();
 
-// }); // end ONLOAD fn
+}); // end ONLOAD fn
 
 window.onresize = function(){ location.reload(); };
