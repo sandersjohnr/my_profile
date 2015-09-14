@@ -37,7 +37,7 @@ var WIDTH = window.innerWidth,
     LINK_FINAL_Y = 1.75,
     LINK_DURATION = TRANS_DURATION,
     LINK_DELAY = 0,
-    SWIVEL_SPEED = 500,
+    SWIVEL_SPEED = 6,
     LIGHT_SPEED = 0.02;
 
 // initialize globals
@@ -758,8 +758,8 @@ function update() {
   // debugging camera position
   // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
   lightingControl();
-  floatControl();
-  // swivelControl();
+  // floatControl();
+  swivelControl();
   // update packages
   TWEEN.update();
   // stats.update();
