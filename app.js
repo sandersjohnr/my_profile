@@ -1,7 +1,7 @@
 /*
  *    MY PROFILE SITE in THREE.js
  */
-window.onload = (function() {
+// window.onload = (function() {
 // initialize stats module
 // var stats = initStats();
 var clock = new THREE.Clock();
@@ -37,7 +37,7 @@ var WIDTH = window.innerWidth,
     LINK_FINAL_Y = 1.75,
     LINK_DURATION = TRANS_DURATION,
     LINK_DELAY = 0,
-    SWIVEL_SPEED = 7,
+    SWIVEL_SPEED = 500,
     LIGHT_SPEED = 0.02;
 
 // initialize globals
@@ -155,9 +155,9 @@ function fillScene() {
 
   // panels
   var panelGeo = new THREE.BoxGeometry(18 * 1.6, 18, 1, 1);
-  var panel_1 = createMesh( panelGeo, 'featur_low.jpg' );
-  var panel_2 = createMesh( panelGeo, 'hoodz_low.jpg' );
-  var panel_3 = createMesh( panelGeo, 'stretchme2_low.jpg' );
+  panel_1 = createMesh( panelGeo, 'featur_low.jpg' );
+  panel_2 = createMesh( panelGeo, 'hoodz_low.jpg' );
+  panel_3 = createMesh( panelGeo, 'stretchme2_low.jpg' );
 
   panel_1.rotation.y = (-Math.PI / 2) + Math.PI/8;
   panel_2.rotation.y = Math.PI / -2;
@@ -758,7 +758,8 @@ function update() {
   // debugging camera position
   // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
   lightingControl();
-  swivelControl();
+  floatControl();
+  // swivelControl();
   // update packages
   TWEEN.update();
   // stats.update();
@@ -771,8 +772,14 @@ function update() {
 }
 
 function swivelControl() {
-  camera.position.z += ( mouseX - camera.position.z ) * 0.000001 * SWIVEL_SPEED;
+
   camera.position.y += ( - mouseY - camera.position.y ) * 0.000001 * SWIVEL_SPEED;
+  camera.position.z += ( mouseX - camera.position.z ) * 0.000001 * SWIVEL_SPEED;
+  if (camera.position.y > 26) { camera.position.y = 26; }
+  if (camera.position.y < 18.5) { camera.position.y = 18.5; }
+  if (camera.position.z < 15) { camera.position.z = 15; }
+  if (camera.position.z > 45) { camera.position.z = 45; }
+
 }
 
 var step = 0.0;
@@ -789,6 +796,15 @@ function lightingControl() {
   aboutSpot1.target = about_panel;
   aboutSpot2.target = about_panel;
   aboutSpot3.target = about_panel;
+
+}
+
+function floatControl() {
+  // Float effect for panels
+  about_panel.position.y += Math.sin(new Date * 0.0008) * 0.002;
+  panel_1.position.y += Math.sin(new Date * 0.0008 + Math.PI/2) * 0.002;
+  panel_2.position.y += Math.sin(new Date * 0.0008 + 3*Math.PI/2) * 0.002;
+  panel_3.position.y += Math.sin(new Date * 0.0008 + Math.PI) * 0.002;
 }
 
 init();
@@ -796,6 +812,6 @@ fillScene();
 createAnimations();
 update();
 
-}); // end ONLOAD fn
+// }); // end ONLOAD fn
 
 window.onresize = function(){ location.reload(); };
