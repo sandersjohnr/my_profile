@@ -26,7 +26,7 @@ var WIDTH = window.innerWidth,
     SPOT_DISTANCE = 1000,
 
     // positioning
-    PANEL_Y = 9.6,
+    PANEL_Y = 10,
     SCENE_WIDTH = 90,
 
     // timing
@@ -801,10 +801,10 @@ function lightingControl() {
 
 function floatControl() {
   // Float effect for panels
-  about_panel.position.y += Math.sin(new Date * 0.0008) * 0.002;
-  panel_1.position.y += Math.sin(new Date * 0.0008 + Math.PI/2) * 0.002;
-  panel_2.position.y += Math.sin(new Date * 0.0008 + 3*Math.PI/2) * 0.002;
-  panel_3.position.y += Math.sin(new Date * 0.0008 + Math.PI) * 0.002;
+  // about_panel.position.y += Math.sin(new Date * 0.0007) * 0.0020;
+  panel_1.position.y += 1.2* Math.sin(new Date * 0.0007 + Math.PI/2) * 0.0020;
+  panel_2.position.y += 0.7* Math.sin(new Date * 0.0007 + 2.5*Math.PI/2) * 0.002;
+  panel_3.position.y += 0.9* Math.sin(new Date * 0.0007 + Math.PI) * 0.002;
 }
 
 init();
