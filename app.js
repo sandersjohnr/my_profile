@@ -37,7 +37,7 @@ var WIDTH = window.innerWidth,
     LINK_FINAL_Y = 1.75,
     LINK_DURATION = TRANS_DURATION,
     LINK_DELAY = 0,
-    SWIVEL_SPEED = 6,
+    SWIVEL_SPEED = 5,
     LIGHT_SPEED = 0.02;
 
 // initialize globals
@@ -775,10 +775,10 @@ function swivelControl() {
 
   camera.position.y += ( - mouseY - camera.position.y ) * 0.000001 * SWIVEL_SPEED;
   camera.position.z += ( mouseX - camera.position.z ) * 0.000001 * SWIVEL_SPEED;
-  if (camera.position.y > 26) { camera.position.y = 26; }
-  if (camera.position.y < 18.5) { camera.position.y = 18.5; }
-  if (camera.position.z < 15) { camera.position.z = 15; }
-  if (camera.position.z > 45) { camera.position.z = 45; }
+  // if (camera.position.y > 26) { camera.position.y = 26; }
+  // if (camera.position.y < 18.5) { camera.position.y = 18.5; }
+  // if (camera.position.z < 15) { camera.position.z = 15; }
+  // if (camera.position.z > 45) { camera.position.z = 45; }
 
 }
 
