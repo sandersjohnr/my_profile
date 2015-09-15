@@ -58,7 +58,7 @@ function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio( PIXEL_RATIO );
   renderer.setSize( WIDTH, HEIGHT );
-  renderer.setClearColor( 0x220000, 1.0 );
+  renderer.setClearColor( 0x293C4E, 1.0 );
 
   // scene
   scene = new THREE.Scene();
@@ -83,13 +83,13 @@ function init() {
 
   guiButton_1 = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(button_w, button_h, 1),
-    new THREE.MeshBasicMaterial({ color: 0x220000 } ));
+    new THREE.MeshBasicMaterial({ color: 0x293C4E } ));
   guiButton_2 = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(button_w * 1.25, button_h, 1),
-    new THREE.MeshBasicMaterial({ color: 0x220000  } ));
+    new THREE.MeshBasicMaterial({ color: 0x293C4E  } ));
   guiButton_3 = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(button_w * 1.25, button_h, 1),
-    new THREE.MeshBasicMaterial({ color: 0x220000 } ));
+    new THREE.MeshBasicMaterial({ color: 0x293C4E } ));
 
   guiButton_1.position.set( -textX * boxOffsetX, textY + boxOffsetY, textDist-0.1);
   guiButton_2.position.set( 0-0.2, textY + boxOffsetY, textDist-0.1);
@@ -98,9 +98,9 @@ function init() {
   camera.add(guiButton_2);
   camera.add(guiButton_3);
 
-  guiText_1 = createTextEmissive('home', textSize, 0, 0xddaaaa);
-  guiText_2 = createTextEmissive('projects', textSize, 0, 0xddaaaa);
-  guiText_3 = createTextEmissive('contact', textSize, 0, 0xddaaaa);
+  guiText_1 = createTextEmissive('Home', textSize, 0, 0xddaaaa);
+  guiText_2 = createTextEmissive('Projects', textSize, 0, 0xddaaaa);
+  guiText_3 = createTextEmissive('Contact', textSize, 0, 0xddaaaa);
   guiText_1.position.set( (-textX + textOffset) * xScale, textY, textDist);
   guiText_2.position.set( (0 + textOffset) * xScale , textY, textDist);
   guiText_3.position.set( (textX + textOffset) * xScale, textY, textDist);
@@ -176,17 +176,17 @@ function fillScene() {
   panel_3.position.z = 2 * SCENE_WIDTH / 3;
 
   var infoGeo = new THREE.BoxGeometry(8 * 1.6, 8, 0.1, 1);
-  info_1 = createMesh(infoGeo, 'featur_slide.jpg');
+  info_1 = createMesh(infoGeo, 'info_featur.jpg');
   info_1.position.set(29, -5, -7);
   info_1.rotation.y = -Math.PI/ 2 + 0.7;
 
-  info_2 = createMesh(infoGeo, 'hoodz_slide.jpg');
+  info_2 = createMesh(infoGeo, 'info_hoodz.jpg');
   info_2.position.x = 36;
   info_2.position.y = -5;
   info_2.position.z = SCENE_WIDTH / 3 - 8.5;
   info_2.rotation.y = - Math.PI / 2 + 0.2;
 
-  info_3 = createMesh(infoGeo, 'stretchme_slide.jpg');
+  info_3 = createMesh(infoGeo, 'info_stretchme.jpg');
   info_3.position.x = 27;
   info_3.position.y = -5;
   info_3.position.z = 2 * SCENE_WIDTH / 3 + 6;
@@ -202,10 +202,19 @@ function fillScene() {
   link_1 = createMesh( linkGeo, 'site_link.jpg' );
   link_2 = createMesh( linkGeo, 'site_link.jpg' );
   link_3 = createMesh( linkGeo, 'site_link.jpg' );
-  link_1.material.emissive = new THREE.Color( 0x81648D );
-  link_2.material.emissive = new THREE.Color( 0x81648D );
-  link_3.material.emissive = new THREE.Color( 0x81648D );
+
+  // info_1.material.emissive = new THREE.Color( 0x81648D );
+  // info_2.material.emissive = new THREE.Color( 0xc44c4c );
+  // info_3.material.emissive = new THREE.Color( 0xe3992a );
+  info_1.material.emissive = new THREE.Color( 0x7A3F80 );
+  info_2.material.emissive = new THREE.Color( 0xC03939 );
+  info_3.material.emissive = new THREE.Color( 0xe3992a );
+  link_1.material.emissive =
+  link_2.material.emissive =
+  link_3.material.emissive = new THREE.Color( 0x67ac47 );
   // contact.material.emissive = new THREE.Color( 0xeca032 );
+  // 0xe3992a
+  //0x2566a2
 
   link_1.rotation.y = Math.PI / - 2 + 0.37;
   link_2.rotation.y = Math.PI / - 2 ;
@@ -224,7 +233,7 @@ function fillScene() {
   link_3.position.y = -2;
 
   // main about panel
-  about_panel = createMesh(panelGeo, 'about_slide_half.jpg');
+  about_panel = createMesh(panelGeo, 'about_slide_mono.jpg');
   about_panel.position.x = -50;
   about_panel.position.y = 10;
   about_panel.position.z = SCENE_WIDTH / 3;
@@ -247,19 +256,19 @@ function fillScene() {
   // Lights
 
   // lighting for about panel
-  aboutSpot1 = new THREE.SpotLight( 0xff0000, 4.0, 100 );
+  aboutSpot1 = new THREE.SpotLight( 0xff0000, 4.2, 100 );
   scene.add(aboutSpot1);
   aboutSpot1.position.x = -96;
   aboutSpot1.position.y = 10;
   aboutSpot1.position.z = 26;
 
-  aboutSpot2 = new THREE.SpotLight( 0x00ff00, 4.0, 100);
+  aboutSpot2 = new THREE.SpotLight( 0x00ff00, 4.2, 100);
   scene.add(aboutSpot2);
   aboutSpot2.position.x = -104;
   aboutSpot2.position.y = 5;
   aboutSpot2.position.z = 42;
 
-  aboutSpot3 = new THREE.SpotLight( 0x0000ff, 4.0, 100);
+  aboutSpot3 = new THREE.SpotLight( 0x0000ff, 4.2, 100);
   scene.add(aboutSpot3);
   aboutSpot3.position.x = -90;
   aboutSpot3.position.y = 17;
@@ -281,7 +290,7 @@ function fillScene() {
   // gui.add(controls, "position2", 10, 70).onChange(controls.updatePosition);
   // gui.add(controls, "position3", 10, 70).onChange(controls.updatePosition);
 
-  mainLight = new THREE.PointLight(0xcccccc, 0.5, 300);
+  mainLight = new THREE.PointLight(0xcccccc, 0.8, 300);
   mainLight.position.set(0, 20, 20);
   scene.add( mainLight );
 
@@ -307,15 +316,15 @@ function fillScene() {
   scene.add( spotThree );
 
   spotFour = new THREE.SpotLight( 0xffffff );
-  spotFour.position.set(-100, 0, about_panel.position.z);
-  spotFour.intensity = 3;
-  spotFour.distance =120;
-      // scene.add(spotFour);
+  spotFour.position.set(-100, 10, about_panel.position.z);
+  spotFour.intensity = 10;
+  spotFour.distance = 120;
+  scene.add(spotFour);
 
   spotOne.target   = panel_1;
   spotTwo.target   = panel_2;
   spotThree.target = panel_3;
-  spotFour.target  = about_panel;
+  spotFour.target  = guiText_2;
 
   // set initial camera position for intro swoop
   camera.position.set(-1000, 50, 30);
@@ -561,7 +570,7 @@ function fillScene() {
 function createText(textString, size, height, color) {
   var options = { size: size,
                   height: height,
-                  font: 'helvetiker',
+                  font: 'eurostile',
                   weight: 'normal',
                   style: 'normal',
                   bevelEnabled: false,
@@ -586,7 +595,7 @@ function createText(textString, size, height, color) {
 function createTextEmissive(textString, size, height, color) {
   var options = { size: size,
                   height: height,
-                  font: 'helvetiker',
+                  font: 'eurostile',
                   weight: 'normal',
                   style: 'normal',
                   bevelEnabled: false,
@@ -598,10 +607,10 @@ function createTextEmissive(textString, size, height, color) {
                 };
   var geom = new THREE.TextGeometry(textString, options);
   var meshMat = new THREE.MeshPhongMaterial({
-    emissive: color
-    // metal: true,
-    // specular: 0xffffff,
-    // shininess: 100
+    emissive: color,
+    metal: true,
+    specular: 0xffffff,
+    shininess: 100
   });
   // meshMat.side = THREE.DoubleSide;
   // var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMat]);
@@ -722,8 +731,8 @@ function createAnimations() {
 // helper functions
 function createMesh(geom, imageFile) {
   var texture = THREE.ImageUtils.loadTexture('assets/images/' + imageFile, THREE.UVMapping);
-  // texture.minFilter = THREE.LinearFilter;
-  // texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.NearestFilter;
+  texture.magFilter = THREE.NearestFilter;
   var mat = new THREE.MeshLambertMaterial();
   mat.map = texture;
   var mesh = new THREE.Mesh(geom, mat);
