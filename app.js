@@ -1,7 +1,7 @@
 /*
  *    MY PROFILE SITE in THREE.js
  */
-// window.onload = (function() {
+window.onload = (function() {
 // initialize stats module
 // var stats = initStats();
 var clock = new THREE.Clock();
@@ -37,7 +37,7 @@ var WIDTH = window.innerWidth,
     LINK_FINAL_Y = 1.75,
     LINK_DURATION = TRANS_DURATION,
     LINK_DELAY = 0,
-    SWIVEL_SPEED = 5,
+    SWIVEL_SPEED = 6,
     LIGHT_SPEED = 0.02;
 
 // initialize globals
@@ -802,9 +802,9 @@ function lightingControl() {
 function floatControl() {
   // Float effect for panels
   // about_panel.position.y += Math.sin(new Date * 0.0007) * 0.0020;
-  panel_1.position.y += 1.2* Math.sin(new Date * 0.0007 + Math.PI/2) * 0.0020;
-  panel_2.position.y += 0.7* Math.sin(new Date * 0.0007 + 2.5*Math.PI/2) * 0.002;
-  panel_3.position.y += 0.9* Math.sin(new Date * 0.0007 + Math.PI) * 0.002;
+  // panel_1.position.y += 1.2* Math.sin(new Date * 0.0007 + Math.PI/2) * 0.0020;
+  // panel_2.position.y += 0.7* Math.sin(new Date * 0.0007 + 2.5*Math.PI/2) * 0.002;
+  // panel_3.position.y += 0.9* Math.sin(new Date * 0.0007 + Math.PI) * 0.002;
 }
 
 init();
@@ -812,6 +812,6 @@ fillScene();
 createAnimations();
 update();
 
-// }); // end ONLOAD fn
+}); // end ONLOAD fn
 
 window.onresize = function(){ location.reload(); };
