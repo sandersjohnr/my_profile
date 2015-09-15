@@ -515,15 +515,15 @@ function fillScene() {
     mouse.y = - ( event.clientY / HEIGHT) * 2 + 1;
 
     raycaster.setFromCamera( mouse, camera );
-    $body = $('body');
+    body = document.getElementsByTagName('body');
+    $body = body[0];
+
     var intersects = raycaster.intersectObjects( selectableObjects );
-
     if (intersects.length > 0) {
-      $body.css('cursor', 'pointer');
+      $body.setAttribute('cursor', 'pointer');
       var selectedObj = intersects[0].object;
-
+      // set normal light speed
       if (selectedObj != about_panel) { lightSpeed = LIGHT_SPEED;}
-
       // focus lighting on hovered-over panel
       if (selectedObj == panel_1) {
         targetSpot(panel_1);
@@ -537,7 +537,7 @@ function fillScene() {
       }
 
     } else {
-      $body.css('cursor', 'default');
+      $body.setAttribute('cursor', 'default');
       lightSpeed = LIGHT_SPEED;
     }
 
