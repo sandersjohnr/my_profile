@@ -142,7 +142,7 @@ function init() {
 function fillScene() {
 
   // mirror
-  var planeGeo = new THREE.PlaneBufferGeometry(500, 600, 1, 1);
+  var planeGeo = new THREE.PlaneBufferGeometry(1500, 1500, 1, 1);
   groundMirror = new THREE.Mirror( renderer, camera,
     { clipBias: 0.003,
       textureWidth: WIDTH,
@@ -151,7 +151,22 @@ function fillScene() {
   mirrorMesh = new THREE.Mesh( planeGeo, groundMirror.material );
   mirrorMesh.add(groundMirror);
   mirrorMesh.rotateX( -Math.PI/2 );
-  mirrorMesh.position.set(0, 0, 50);
+  mirrorMesh.position.set(-500, 0, 0);
+
+  // sky
+  var skyGeo = new THREE.PlaneBufferGeometry(30000, 30000, 1, 1);
+  var skyMat = new THREE.MeshLambertMaterial();
+  sky = new THREE.Mesh(skyGeo, skyMat);
+  sky.rotation.x = Math.PI/2;
+  sky.rotation.z = Math.PI/2;
+
+  sky.position.y = 250;
+  sky.position.x = 800;
+  sky.position.z = 1000;
+
+  sky.material.emissive = new THREE.Color(0x993300);
+  scene.add(sky);
+
 
   // panels
   var panelGeo = new THREE.BoxGeometry(18 * 1.6, 18, 1, 1);
@@ -189,7 +204,7 @@ function fillScene() {
   info_3 = createMesh(infoGeo, 'info_stretchme.jpg');
   info_3.position.x = 27;
   info_3.position.y = -5;
-  info_3.position.z = 2 * SCENE_WIDTH / 3 + 6;
+  info_3.position.z = 2 * SCENE_WIDTH / 3 + 5;
   info_3.rotation.y = - Math.PI / 2 - 0.7;
 
   // contact
@@ -217,16 +232,16 @@ function fillScene() {
   //0x2566a2
 
   link_1.rotation.y = Math.PI / - 2 + 0.37;
-  link_2.rotation.y = Math.PI / - 2 ;
+  link_2.rotation.y = Math.PI / - 2 - 0.2;
   link_3.rotation.y = Math.PI / - 2 - 0.37;
 
-  link_1.position.x = 40;
-  link_2.position.x = 39.5;
-  link_3.position.x = 41;
+  link_1.position.x = 39;
+  link_2.position.x = 37;
+  link_3.position.x = 39;
 
-  link_1.position.z = 8.0;
-  link_2.position.z = 40;
-  link_3.position.z = 49;
+  link_1.position.z = 15.0;
+  link_2.position.z = 42;
+  link_3.position.z = 45;
 
   link_1.position.y = -2;
   link_2.position.y = -2;
@@ -767,8 +782,8 @@ function update() {
   // debugging camera position
   // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
   lightingControl();
-  // floatControl();
-  swivelControl();
+  floatControl();
+  // swivelControl();
   // update packages
   TWEEN.update();
   // stats.update();
@@ -810,10 +825,10 @@ function lightingControl() {
 
 function floatControl() {
   // Float effect for panels
-  // about_panel.position.y += Math.sin(new Date * 0.0007) * 0.0020;
-  // panel_1.position.y += 1.2* Math.sin(new Date * 0.0007 + Math.PI/2) * 0.0020;
-  // panel_2.position.y += 0.7* Math.sin(new Date * 0.0007 + 2.5*Math.PI/2) * 0.002;
-  // panel_3.position.y += 0.9* Math.sin(new Date * 0.0007 + Math.PI) * 0.002;
+  about_panel.position.y += Math.sin(new Date * 0.0007) * 0.0020;
+  panel_1.position.y += 1.2* Math.sin(new Date * 0.0007 + Math.PI/2) * 0.0020;
+  panel_2.position.y += 0.7* Math.sin(new Date * 0.0007 + 2.5*Math.PI/2) * 0.002;
+  panel_3.position.y += 0.9* Math.sin(new Date * 0.0007 + Math.PI) * 0.002;
 }
 
 init();
