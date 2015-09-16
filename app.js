@@ -391,6 +391,11 @@ function fillScene() {
   document.addEventListener('mousedown', mouseDown , false);
   document.addEventListener('mousemove', mouseMove, false);
 
+  var canvas = document.getElementById('WebGL-output');
+  var mc = new Hammer(canvas);
+  mc.on('tap', mouseDown);
+
+
   var projector = new THREE.Projector();
   var mouseover = false;
   // init selectables for raycaster
