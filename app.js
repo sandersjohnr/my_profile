@@ -390,11 +390,10 @@ function fillScene() {
 
   document.addEventListener('mousedown', mouseDown , false);
   document.addEventListener('mousemove', mouseMove, false);
-
-  var canvas = document.getElementById('WebGL-output');
-  var mc = new Hammer(canvas);
-  mc.on('tap', mouseDown);
-
+  //
+  // var canvas = document.getElementById('WebGL-output');
+  // var mc = new Hammer(canvas);
+  // mc.on('tap', mouseDown);
 
   var projector = new THREE.Projector();
   var mouseover = false;
@@ -787,7 +786,7 @@ function update() {
   // debugging camera position
   // if (!(frame++ % 300)) console.log(camera.position, camera.quaternion);
   lightingControl();
-  floatControl();
+  // floatControl();
   // swivelControl();
   // update packages
   TWEEN.update();
