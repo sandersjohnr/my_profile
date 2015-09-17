@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>John Sanders | Web Developer</title>
 
-    <link rel="stylesheet" href="./style.css" charset="utf-8">
+    <link rel="stylesheet" href="style.css" charset="utf-8">
 
     <script src="libraries/three.min.js"></script>
     <script src="libraries/hammer.min.js"></script>
@@ -36,15 +36,36 @@
   <body>
     <!-- <div id="Stats-output"></div> -->
     <div id="WebGL-output"></div>
+    <div id="mobile-notice">
+      <h4>
+        This site requires a width of at least 600 pixels.<br>
+        Please resize your browser for the real deal!<br><br>
+        Mobile & touch screen functionality is in the works...<br><hr><br>
+        <p style="color: blue;">
+          John Sanders <br>
+          Web Developer | Tech Enthusiast <br>
+          sandersjohnr@gmail.com <br>
+
+        </p>
+
+        <p class="project-heading"> Recent Projects: </p>
+        <a href="http://featur.herokuapp.com">Featur</a><br>
+        <a href="http://hoodz.herokuapp.com">Hoodz</a><br>
+        <a href="http://stretchme.herokuapp.com">StretchMe</a><br>
+
+      </h4>
+
+
+    </div>
 
     <footer>
       <div class="reset" onClick="location.reload()"> made with three.js - reset </div>
       <div class="copyright" style="float: right;">&copy; 2015 John Sanders </div>
     </footer>
 
-    <a id="featur" href="http://featur.herokuapp.com" target="_blank"></a>
-    <a id="hoodz" href="http://hoodz.herokuapp.com" target="_blank"></a>
-    <a id="stretchme" href="http://stretchme.herokuapp.com" target="_blank"></a>
-    <a id="contact" style="float:right;" href="mailto:sandersjohnr@gmail.com?subject=I visited your site and wanted to contact you..." target="_blank"></a>
+    <a class="hidden" id="featur" href="http://featur.herokuapp.com" target="_blank"></a>
+    <a class="hidden" id="hoodz" href="http://hoodz.herokuapp.com" target="_blank"></a>
+    <a class="hidden" id="stretchme" href="http://stretchme.herokuapp.com" target="_blank"></a>
+    <a class="hidden" id="contact" style="float:right;" href="mailto:sandersjohnr@gmail.com?subject=I visited your site and wanted to contact you..." target="_blank"></a>
   </body>
 </html>

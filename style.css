@@ -6,7 +6,7 @@ body {
     Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-a {
+.hidden {
   display: none;
 }
 
@@ -26,60 +26,23 @@ footer {
 
 .reset { position: absolute; left: 0; }
 
-nav {
-  position: relative;
-  float: left;
-  width: 100%;
-  height: 50px;
-  background-color: black;
-  box-shadow: 0 2px 3px maroon;
-  font-weight: bold;
-  color: white;
-  z-index: 100;
-  display: block;
-}
-
-nav ul {
-  position: relative;
-  clear: left;
-  float: left;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  left: 50%;
-  text-align: center;
-}
-
-nav ul li {
-  position: relative;
-  display: block;
-  float: left;
-  list-style: none;
-  margin-top: -5px;
-  padding: 0;
-  right: 50%;
-  width: 150px;
-}
-
-nav ul li div {
-  display: block;
-  cursor: pointer;
-  padding: 20px 0;
-  width: 100%;
-}
-
-#WebGL-output {
+div#WebGL-output {
   display: block;
   position: relative;
 }
-@media (max-width: 500px) {
-  nav ul li {
-    width: 75px;
+
+div#mobile-notice {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  padding: 50px;
+}
+
+@media screen and (max-width: 700px) {
+  div#WebGL-output {
+    display: none;
   }
-}
-
-@media (max-width: 300px) {
-  nav ul li {
-    float: none;
+  div#mobile-notice {
+    display: block;
   }
 }
