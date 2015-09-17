@@ -6,6 +6,11 @@ body {
     Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
+a {
+  text-decoration: none;
+  color:darkblue;
+}
+
 .hidden {
   display: none;
 }
