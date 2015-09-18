@@ -4,6 +4,7 @@ body {
   overflow: hidden;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
     Helvetica, Arial, "Lucida Grande", sans-serif;
+  cursor: pointer;
 }
 
 a {
@@ -40,14 +41,17 @@ div#mobile-notice {
   width: 100vw;
   height: 100vh;
   display: none;
-  padding: 50px;
+  padding: 25px;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 900px) {
   div#WebGL-output {
     display: none;
   }
   div#mobile-notice {
     display: block;
+  }
+  footer {
+    display: none;
   }
 }
