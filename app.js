@@ -835,10 +835,15 @@ function floatControl() {
   panel_3.position.y += 0.9* Math.sin(new Date * 0.0007 + Math.PI) * 0.002;
 }
 
-init();
-fillScene();
-createAnimations();
-update();
+if (window.innerWidth >= 768) {
+  init();
+  fillScene();
+  createAnimations();
+  update();
+
+} else {
+  console.log('no way, jose');
+}
 
 }); // end ONLOAD fn
 
