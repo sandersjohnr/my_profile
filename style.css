@@ -107,7 +107,7 @@ div#mobile-notice {
 }
 .easeAll1sec {
   -webkit-transition: all 1.5s ease;
-  transition: all 1.5s ease;
+  transition: all 0.75s ease;
 }
 .nobackface {
   -webkit-backface-visibility: hidden;
