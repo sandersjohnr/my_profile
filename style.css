@@ -57,6 +57,7 @@ div#mobile-notice {
   overflow: scroll;
 }
 
+/*
 .box {
     border-style: solid;
     border-width: 1px;
@@ -74,7 +75,7 @@ div#mobile-notice {
     height: 200px;*/
     /*-webkit-transform: rotate(120deg);*/
     transform: translate(75%) rotate(120deg) ;
-}
+}*/
 
 
 @media screen and (max-width: 768px) {

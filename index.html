@@ -48,17 +48,27 @@
         <a href="mailto:sandersjohnr@gmail.com">sandersjohnr@gmail.com</a><br><br>
         <hr>
 
-        <p class="project-heading" style="color: darkgrey;"> Check out my recent projects: </p>
+        <p class="project-heading" style="color: darkgrey;``"> Check out my recent projects: </p>
         <h4>
+          <a id="portfolio" href="#" onClick="window.open('http://sandersjohnr.github.io','mywindow','width=1000,height=700, toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=no,resizable=yes')">My Portfolio Site
+            <span class="popup" style="color:darkgrey; font-size:12px;">(opens new window)</span></a><br><br>
           <a href="http://featur.herokuapp.com">Featur</a><br>
           <a href="http://hoodz.herokuapp.com">Hoodz</a><br>
           <a href="http://stretchme.herokuapp.com">StretchMe</a><br><br>
         </h4>
       </div>
 
-
-
     </div>
+
+    <script type="text/javascript">
+      $('.popup').hide();
+      $('#portfolio').on('mouseover', function(){
+        $('.popup').fadeIn(500);
+      });
+      $('#portfolio').on('mouseleave', function(){
+        $('.popup').fadeOut(500);
+      });
+    </script>
 
     <footer>
       <div class="reset" onClick="location.reload()"> made with three.js - reset </div>

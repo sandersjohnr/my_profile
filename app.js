@@ -835,14 +835,14 @@ function floatControl() {
   panel_3.position.y += 0.9* Math.sin(new Date * 0.0007 + Math.PI) * 0.002;
 }
 
-if (window.innerWidth >= 768) {
+if (window.innerWidth >= 900 || window.innerHeight <= 600)  {
   init();
   fillScene();
   createAnimations();
   update();
 
 } else {
-  console.log('no way, jose');
+  console.log('neigh way, jose');
 }
 
 }); // end ONLOAD fn
