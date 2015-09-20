@@ -5,6 +5,7 @@ body {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
     Helvetica, Arial, "Lucida Grande", sans-serif;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 a {
@@ -71,11 +72,12 @@ div#mobile-notice {
 
 .box:hover {
     background-color: #FFCCCC;
-    /*width: 200px;
-    height: 200px;*/
-    /*-webkit-transform: rotate(120deg);*/
+    width: 200px;
+    height: 200px;
+    -webkit-transform: rotate(120deg);
     transform: translate(75%) rotate(120deg) ;
-}*/
+}
+*/
 
 
 @media screen and (max-width: 768px) {
