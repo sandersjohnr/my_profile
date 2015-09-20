@@ -842,7 +842,7 @@ if (window.innerWidth >= 900 || window.innerHeight <= 600)  {
   update();
 
 } else {
-  console.log('neigh way, jose');
+  console.log('no way, jose');
 }
 
 }); // end ONLOAD fn
